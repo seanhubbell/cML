@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+        id="cml"
+        name="cML"
+        version="1.0"
+        provider-name="Sean C. Hubbell"
+        class="cml.cMLPlugin">
+
+    <requires>
+        <api version="1.2"/>
+    </requires>
+
+    <runtime>
+        <library name="cml.jar"/>
+    </runtime>
+</plugin>
