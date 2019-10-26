@@ -16,7 +16,7 @@ import controls.nist.rev4.SortControls;
 class Main {
 
 	public static void main(String argv[]) {
-		int withdrawn = 0;
+		//int withdrawn = 0;
 
 		ControlParser parser = new ControlParser();
 		extracteSecurityControls(parser);

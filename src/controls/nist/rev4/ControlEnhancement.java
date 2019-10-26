@@ -31,7 +31,7 @@ public class ControlEnhancement {
 		if (title != null && !title.equals(""))
 			System.out.println(indent + sindent + "title=" + title);
 
-		if (withdrawn != null && !withdrawn.equals(""))
+		if (withdrawn != null)
 			withdrawn.print(indent + sindent);
 		
 		if (baselineImpacts != null && baselineImpacts.size() > 0) {

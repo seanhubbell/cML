@@ -34,7 +34,7 @@ public class Control {
 		System.out.println(indent + sindent + "title=" + title);
 		System.out.println(indent + sindent + "family=" + family);
 
-		if (withdrawn == null || withdrawn.equals("")) {
+		if (withdrawn == null) {
 
 			if (priority != null && !priority.equals(""))
 				System.out.println(indent + sindent + "priority=" + priority);
