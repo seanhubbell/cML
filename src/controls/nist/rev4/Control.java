@@ -15,19 +15,19 @@ public class Control {
 	public List<SupplementalGuidance> supplementalGuidances = new ArrayList<SupplementalGuidance>();
 	public List<ControlEnhancement> controlEnhancements = new ArrayList<ControlEnhancement>();
 	public List<Reference> references = new ArrayList<Reference>();
-	public Withdrawn withdrawn = null; 
+	public Withdrawn withdrawn = null;
 
-	// From NIST SP 800-53a
+	// From NIST SP 800-53a Rev. 4
 	public List<Objective> objectives = new ArrayList<Objective>();
 	public List<PotentialAssessment> potentialAssessments = new ArrayList<PotentialAssessment>();
-	// Control Enhancements can come from NIST SP 800-53a as well
+	// Control Enhancements can come from NIST SP 800-53a Rev. 4 as well
 
 	private static String sindent = "  ";
 
 	public boolean isWithdrawn() {
 		return (withdrawn != null && withdrawn.incorporatedInto != null && withdrawn.incorporatedInto.size() > 0);
 	}
-	
+
 	public void print(String indent) {
 		System.out.println(indent + "control");
 		System.out.println(indent + sindent + "number=" + number);
@@ -82,8 +82,7 @@ public class Control {
 				for (PotentialAssessment pa : potentialAssessments)
 					pa.print(indent + sindent + sindent);
 			}
-		}
-		else
+		} else
 			withdrawn.print(indent + sindent);
 	}
 }

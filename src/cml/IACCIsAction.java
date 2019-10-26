@@ -14,26 +14,35 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import com.nomagic.magicdraw.actions.MDAction;
-import com.nomagic.magicdraw.core.Application;
-import com.nomagic.magicdraw.core.Project;
-import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
-import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification;
-import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
-import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.nomagic.uml2.impl.ElementsFactory;
 
-import controls.ia.ccis.*;
+import controls.ia.ccis.CCI_Item;
+import controls.ia.ccis.CCI_ItemParser;
 
-@SuppressWarnings("serial")
+/**
+ * The CCIs action is executed when the user selects the associated item in
+ * Magic Draw. be leveraged by cML.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 class IACCIsAction extends MDAction {
 	public CCI_ItemParser parser = new CCI_ItemParser();
 
+	/**
+	 * Creates an instance of the CCIs action.
+	 * 
+	 * @param id   the id of the action.
+	 * @param name the name of the action.
+	 */
 	public IACCIsAction(@CheckForNull String id, String name) {
 		super(id, name, null, null);
 	}
 
+	/**
+	 * Action performed is called when the user selects the associate item in Magic
+	 * Draw.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
@@ -43,7 +52,7 @@ class IACCIsAction extends MDAction {
 			NodeList nList = doc.getElementsByTagName("cci_item");
 			parser.parse(nList);
 			ArrayList<CCI_Item> ccis = parser.getCCIs();
-			
+
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogOwner(), ex.getMessage());
 		}

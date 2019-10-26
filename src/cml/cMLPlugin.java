@@ -6,8 +6,17 @@ import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.plugins.Plugin;
 
+/**
+ * The Magic Draw (MD) cML Plug-in.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 public class cMLPlugin extends Plugin {
 
+	/**
+	 * Initializes the cML plug-in and creates the cML main menu item.
+	 */
 	@Override
 	public void init() {
 
@@ -15,6 +24,11 @@ public class cMLPlugin extends Plugin {
 		manager.addMainMenuConfigurator(new MainMenuConfigurator(getSubMenuActions()));
 	}
 
+	/**
+	 * Provides the sub-menu item menus for cML
+	 * 
+	 * @return the actions category for each of the sub-menu items.
+	 */
 	private static NMAction getSubMenuActions() {
 		ActionsCategory category = new ActionsCategory(null, "Security Controls");
 		category.setNested(true);
@@ -22,11 +36,17 @@ public class cMLPlugin extends Plugin {
 		return category;
 	}
 
+	/**
+	 * Handles closing the cML plug-in.
+	 */
 	@Override
 	public boolean close() {
 		return true;
 	}
 
+	/**
+	 * Checks the necessary data to see if the cML plug-in is supported.
+	 */
 	@Override
 	public boolean isSupported() {
 		return true;

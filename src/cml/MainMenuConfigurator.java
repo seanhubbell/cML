@@ -7,33 +7,45 @@ import com.nomagic.actions.ActionsManager;
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 
-public class MainMenuConfigurator implements AMConfigurator
-{
+/**
+ * The main menu for the cML plug-in.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
+public class MainMenuConfigurator implements AMConfigurator {
 	String plugInName = "cML";
-
 	private NMAction action;
 
-	public MainMenuConfigurator(NMAction action)
-	{
+	/**
+	 * Creates an instance of the main menu configurator.
+	 * 
+	 * @param action the action associated with the main menu configurator.
+	 */
+	public MainMenuConfigurator(NMAction action) {
 		this.action = action;
 	}
 
+	/**
+	 * Configures the main menu.
+	 */
 	@Override
-	public void configure(ActionsManager manager)
-	{
+	public void configure(ActionsManager manager) {
 		ActionsCategory category = (ActionsCategory) manager.getActionFor(plugInName);
 
-		if( category == null )
-		{
-			category = new MDActionsCategory(plugInName,plugInName);
+		if (category == null) {
+			category = new MDActionsCategory(plugInName, plugInName);
 			category.setNested(true);
 			manager.addCategory(category);
 		}
 		category.addAction(action);
 	}
+
+	/**
+	 * Provides the priority of the cML plug-in.
+	 */
 	@Override
-	public int getPriority()
-	{
+	public int getPriority() {
 		return AMConfigurator.MEDIUM_PRIORITY;
 	}
 
