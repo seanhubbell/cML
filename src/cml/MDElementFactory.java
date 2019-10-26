@@ -1,10 +1,13 @@
 /* Copyright Sean C. Hubbell All Rights Reserved */
 package cml;
 
-import com.nomagic.magicdraw.core.Application;
+import java.util.List;
+
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.PackageableElement;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
@@ -31,6 +34,20 @@ public class MDElementFactory {
 			}
 		}
 		return result;
+	}
+
+	public void createPriorities(Package folder, String enumName, List<String> literals)
+	{
+		ElementsFactory factory = Project.getProject(folder).getElementsFactory();
+		Enumeration e = factory.createEnumerationInstance();
+		e.setOwner(folder);
+		e.setName(enumName);
+		
+		for(String literal : literals) {
+			EnumerationLiteral cliteral = factory.createEnumerationLiteralInstance();
+			cliteral.setOwner(e);
+			cliteral.setName(literal);
+		}
 	}
 
 	public Class createClass(Package folder, String name, Stereotype stereotype)

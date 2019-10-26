@@ -4,6 +4,7 @@ package cml;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
@@ -19,15 +20,21 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
+import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
 import controls.nist.rev4.Control;
+import controls.nist.rev4.ControlAssessmentParser;
 import controls.nist.rev4.ControlEnhancement;
 import controls.nist.rev4.ControlParser;
+import controls.nist.rev4.Objective;
+import controls.nist.rev4.PotentialAssessment;
 import controls.nist.rev4.Reference;
 import controls.nist.rev4.Statement;
 import controls.nist.rev4.SupplementalGuidance;
@@ -35,7 +42,9 @@ import controls.nist.rev4.Withdrawn;
 
 @SuppressWarnings("serial")
 class LoadNISTControlsAction extends MDAction {
-
+	private Package controlsFolder = null;
+	private Package prioritiesFolder = null;
+	private Package baselineImpactsFolder = null;
 	private MDElementFactory factory = null;
 	
 	public LoadNISTControlsAction(@CheckForNull String id, String name) {
@@ -60,7 +69,10 @@ class LoadNISTControlsAction extends MDAction {
 					parser.parse(doc.getChildNodes());
 				}
 			}
-
+			
+			ControlAssessmentParser caparser = new ControlAssessmentParser(parser.getControls());	
+			extracteSecurityControlAssessments(caparser);
+			
 			// JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogOwner(),
 			// parser.getControls().size() + " Security Controls Loaded");
 
@@ -80,35 +92,50 @@ class LoadNISTControlsAction extends MDAction {
 
 				ArrayList<Control> controls = parser.getControls();
 				factory = new MDElementFactory(project);
-
+				
 				/**
 				 * Create the family of security control packages
 				 */
-				Package controlsFolder = factory.createPackage("NIST SP 800-53 Rev 4", model);
+				controlsFolder = factory.createPackage("NIST SP 800-53 Rev 4", model);
+				
+				/**
+				 * Create the re-usable elements. 
+				 */
+
+				Package baseFolder = factory.createPackage("base", controlsFolder);
+				
+				prioritiesFolder = factory.createPackage("priorities", baseFolder);
+				factory.createPriorities(prioritiesFolder, "Priority", Arrays.asList("P1", "P2", "P3"));
+				
+				baselineImpactsFolder = factory.createPackage("baseline-impacts", baseFolder);
+				factory.createPriorities(baselineImpactsFolder, "BaselineImpact", Arrays.asList("LOW", "MODERATE", "HIGH"));
+				
 				for (Control control : controls) {
 					factory.createPackage(control.family, controlsFolder);
+					Package familyFolder = factory.createPackage(control.family, controlsFolder);
+					Package controlNumFolder = factory.createPackage(control.number, familyFolder);
+					factory.createClass(controlNumFolder, control.number, controlStereotype);
 				}
 
 				for (int i = 0; i < controls.size(); i++) {
 					Control control = controls.get(i);
 					Package folder = null;
 					ArrayList<Class> items = null;
-					Class cclass = null;
 
-					Package familyFolder = factory.createPackage(control.family, controlsFolder);
-					Package controlNumFolder = factory.createPackage(control.number, familyFolder);
-					Class controlClass = factory.createClass(controlNumFolder, control.number, controlStereotype);
-					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Family", control.family, true);
+			        Package controlNumFolder = Finder.byNameRecursively().find(controlsFolder, Package.class, control.number);
+			        Class controlClass = Finder.byNameRecursively().find(controlsFolder, Class.class, control.number);
+			        StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Family", control.family, true);
 					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Number", control.number, true);
 					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Title", control.title, true);
-					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Priority", control.priority, true);
+					EnumerationLiteral priorityLiteral = Finder.byNameRecursively().find(prioritiesFolder, EnumerationLiteral.class, control.priority);
+					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Priority", priorityLiteral, true);
 
 					/**
 					 * Create & add the baseline impacts
 					 */
 					folder = factory.createPackage("Baseline Impacts", controlNumFolder);
-					items = createBaselineImpacts(folder, baselineImpactStereotype, control.baselineImpacts);
-					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Baseline Impacts", items, true);
+					ArrayList<EnumerationLiteral> biItems = createBaselineImpacts(folder, baselineImpactStereotype, control.baselineImpacts);
+					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Baseline Impacts", biItems, true);
 
 					/**
 					 * Create & add the statements
@@ -149,23 +176,23 @@ class LoadNISTControlsAction extends MDAction {
 					 */
 					if(control.isWithdrawn()) {
 						folder = factory.createPackage("Withdrawn", controlNumFolder);
-						cclass = createWithdrawn(folder, withdrawnStereotype, control.withdrawn);
+						Class cclass = createWithdrawn(folder, withdrawnStereotype, control.withdrawn);
 						StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Withdrawn", cclass, true);
 					}
 
 					/**
-					 * Create & add the references
+					 * Create & add the objective
 					 */
-					//folder = factory.createPackage("Objectives", controlNumFolder);
-					//items = createObjectives(folder, controlStereotype, objectiveStereotype, control.objectives);
-					//StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Objectives", items, true);
+					folder = factory.createPackage("Objectives", controlNumFolder);
+					items = createObjectives(folder, objectiveStereotype, control.objectives);
+					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Objectives", items, true);
 					
 					/**
 					 * Create & add the potential assessment
 					 */
-					//folder = factory.createPackage("Potential Assessments", controlNumFolder);
-					//items = createPotentialAssessments(folder, controlStereotype, potentialAssessmentStereotype, control.potentialAssessments);
-					//StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Potential Assessment", items, true);
+					folder = factory.createPackage("Potential Assessments", controlNumFolder);
+					items = createPotentialAssessments(folder, potentialAssessmentStereotype, control.potentialAssessments);
+					StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Potential Assessment", items, true);
 				}
 				SessionManager.getInstance().closeSession(project);
 			}
@@ -182,10 +209,12 @@ class LoadNISTControlsAction extends MDAction {
 	 * @param baselineImpacts - the baseline impacts collection that need Magic Draw classes generated against.
 	 * @return the collection of new classes created from the given baseline impacts
 	 */
-	private ArrayList<Class> createBaselineImpacts(Package folder, Stereotype baselineImpactStereotype, List<String> baselineImpacts) {
-		ArrayList<Class> items = new ArrayList<Class>();
+	private ArrayList<EnumerationLiteral> createBaselineImpacts(Package folder, Stereotype baselineImpactStereotype, List<String> baselineImpacts) {
+		ArrayList<EnumerationLiteral> items = new ArrayList<EnumerationLiteral>();
 		for (String bli : baselineImpacts) {
-			items.add(factory.createClass(folder, bli, baselineImpactStereotype));
+			EnumerationLiteral baselineImpactLiteral =
+					Finder.byNameRecursively().find(baselineImpactsFolder, EnumerationLiteral.class, bli);			
+			items.add(baselineImpactLiteral);
 		}
 		return items;
 	}
@@ -234,7 +263,13 @@ class LoadNISTControlsAction extends MDAction {
 			sgClass.setOwner(folder);
 			result.add(sgClass);
 			StereotypesHelper.setStereotypePropertyValue(sgClass, supplementalGuidanceStereotype, "Description", sg.description, true);
-			StereotypesHelper.setStereotypePropertyValue(sgClass, supplementalGuidanceStereotype, "Related", sg.related, true);
+
+			ArrayList<Class> relatedClasses = new ArrayList<Class>();
+			for(String related : sg.related) {
+				Class relatedClass = Finder.byNameRecursively().find(controlsFolder, Class.class, related);
+				relatedClasses.add(relatedClass);
+			}
+			StereotypesHelper.setStereotypePropertyValue(sgClass, supplementalGuidanceStereotype, "Related", relatedClasses, true);
 		}
 		return result;
 	}
@@ -266,7 +301,7 @@ class LoadNISTControlsAction extends MDAction {
 			StereotypesHelper.setStereotypePropertyValue(ceClass, controlEnhancementStereotype, "Title", ce.title, true);
 
 			subFolder = factory.createPackage("Baseline Impacts", folder);
-			ArrayList<Class> baselineImpactClasses = createBaselineImpacts(subFolder, baselineImpactStereotype, ce.baselineImpacts);
+			ArrayList<EnumerationLiteral> baselineImpactClasses = createBaselineImpacts(subFolder, baselineImpactStereotype, ce.baselineImpacts);
 			StereotypesHelper.setStereotypePropertyValue(ceClass, controlEnhancementStereotype, "Baseline Impacts", baselineImpactClasses, true);
 			
 			subFolder = factory.createPackage("Statements", folder);
@@ -318,9 +353,86 @@ class LoadNISTControlsAction extends MDAction {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @param folder
+	 * @param referenceStereotype
+	 * @param reference
+	 * @return
+	 */
 	private Class createReference(Package folder, Stereotype referenceStereotype, Reference reference) {
 		Class result = factory.createClass(folder, reference.item, referenceStereotype);
 		StereotypesHelper.setStereotypePropertyValue(result, referenceStereotype, "Item", reference.item, true);
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param folder
+	 * @param objectiveStereotype
+	 * @param objectives
+	 * @return
+	 */
+	private ArrayList<Class> createObjectives(Package folder, Stereotype objectiveStereotype, List<Objective> objectives) {
+		ArrayList<Class> result = new ArrayList<Class>();
+
+		for (Objective objective : objectives) {
+			Class objectiveClass = factory.createClass(folder, objective.number, objectiveStereotype);
+			StereotypesHelper.setStereotypePropertyValue(objectiveClass, objectiveStereotype, "Number", objective.number, true);
+			StereotypesHelper.setStereotypePropertyValue(objectiveClass, objectiveStereotype, "Decision", objective.decision, true);
+			result.add(objectiveClass);
+
+			Package subFolder = factory.createPackage("Objectives", folder);
+			ArrayList<Class> subClasses = createObjectives(subFolder, objectiveStereotype, objective.objectives);
+			StereotypesHelper.setStereotypePropertyValue(objectiveClass, objectiveStereotype, "Objectives", subClasses, true);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param folder
+	 * @param paStereotype
+	 * @param potentialAssessments
+	 * @return
+	 */
+	private ArrayList<Class> createPotentialAssessments(Package folder,
+			Stereotype paStereotype,
+			List<PotentialAssessment> potentialAssessments) {
+		ArrayList<Class> result = new ArrayList<Class>();
+		
+		for (PotentialAssessment pa : potentialAssessments) {
+			Class ceClass = factory.createClass(folder, pa.method, paStereotype);
+			StereotypesHelper.setStereotypePropertyValue(ceClass, paStereotype, "Method", pa.method, true);
+			StereotypesHelper.setStereotypePropertyValue(ceClass, paStereotype, "Objects", pa.objects, true);
+			
+			result.add(ceClass);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param parser
+	 */
+	private static void extracteSecurityControlAssessments(ControlAssessmentParser parser) {
+		try {
+			File file = new File("S:\\References\\NIST\\NIST_SP_800_53a\\800-53a-objectives.xml");
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Document doc = dBuilder.parse(file);
+
+			//NodeList nList = doc.getElementsByTagName("controls:control");
+			//int numControls = nList.getLength();
+			//System.out.println("# countrols with assessments = " + numControls);
+
+			if (doc.getDocumentElement().getNodeName().equals("controls:controls")) {
+				if (doc.hasChildNodes()) {
+					parser.extend(doc.getChildNodes());
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
