@@ -1,25 +1,17 @@
 /* Copyright Sean C. Hubbell All Rights Reserved */
 package controls.nist.rev4;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Potential Assessment class is the data provided from NIST SP 800-53 and
+ * 800-53a. Revision 4.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 public class PotentialAssessment {
-	public String method = new String();
+	public String method = null;
 	public List<String> objects = new ArrayList<String>();
-
-	private static String sindent = "  ";
-
-	public void print(String indent) {
-		System.out.println(indent + "potential-assessment");
-		if (method != null && !method.equals(""))
-			System.out.println(indent + sindent + "method=" + method);
-
-		if (objects != null && objects.size() > 0) {
-			System.out.println(indent + sindent + "objects");
-			for (String o : objects)
-				System.out.println(indent + sindent + sindent + "object=" + o);
-		}
-	}
 }

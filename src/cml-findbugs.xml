@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1" sequence="0" timestamp="1572219806099" analysisTimestamp="1572220840923" release="">
+  <Project projectName="cML">
+    <Jar>C:\Users\Sean\eclipse-workspace-md\cML\src</Jar>
+    <Jar>C:\Users\Sean\eclipse-workspace-md\cML</Jar>
+    <Jar>C:\Users\Sean\eclipse-workspace-md\cML\src\cml</Jar>
+    <SrcDir>C:\Users\Sean\eclipse-workspace-md\cML\src</SrcDir>
+    <SrcDir>C:\Users\Sean\eclipse-workspace-md\cML\src\cml</SrcDir>
+  </Project>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" rank="17" abbrev="DMI" category="STYLE">
+    <Class classname="cml.IACCIsAction">
+      <SourceLine classname="cml.IACCIsAction" sourcefile="IACCIsAction.java" sourcepath="cml/IACCIsAction.java"/>
+    </Class>
+    <Method classname="cml.IACCIsAction" name="actionPerformed" signature="(Ljava/awt/event/ActionEvent;)V" isStatic="false">
+      <SourceLine classname="cml.IACCIsAction" start="50" end="60" startBytecode="0" endBytecode="31" sourcefile="IACCIsAction.java" sourcepath="cml/IACCIsAction.java"/>
+    </Method>
+    <String value="S:\\References\\CCIs\\u_cci_list\\U_CCI_List.xml" role="FILE_NAME"/>
+    <SourceLine classname="cml.IACCIsAction" start="50" end="50" startBytecode="6" endBytecode="6" sourcefile="IACCIsAction.java" sourcepath="cml/IACCIsAction.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" rank="20" abbrev="REC" category="STYLE">
+    <Class classname="cml.IACCIsAction">
+      <SourceLine classname="cml.IACCIsAction" sourcefile="IACCIsAction.java" sourcepath="cml/IACCIsAction.java"/>
+    </Class>
+    <Method classname="cml.IACCIsAction" name="actionPerformed" signature="(Ljava/awt/event/ActionEvent;)V" isStatic="false">
+      <SourceLine classname="cml.IACCIsAction" start="50" end="60" startBytecode="0" endBytecode="233" sourcefile="IACCIsAction.java" sourcepath="cml/IACCIsAction.java"/>
+    </Method>
+    <SourceLine classname="cml.IACCIsAction" start="57" end="57" startBytecode="56" endBytecode="56" sourcefile="IACCIsAction.java" sourcepath="cml/IACCIsAction.java"/>
+  </BugInstance>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" rank="17" abbrev="DMI" category="STYLE">
+    <Class classname="cml.LoadNISTControlsAction">
+      <SourceLine classname="cml.LoadNISTControlsAction" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Class>
+    <Method classname="cml.LoadNISTControlsAction" name="actionPerformed" signature="(Ljava/awt/event/ActionEvent;)V" isStatic="false">
+      <SourceLine classname="cml.LoadNISTControlsAction" start="60" end="142" startBytecode="0" endBytecode="322" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Method>
+    <String value="S:\\References\\NIST\\NIST_SP_800-53\\800-53-controls-mod-pm-priorities-added.xml" role="FILE_NAME"/>
+    <SourceLine classname="cml.LoadNISTControlsAction" start="62" end="62" startBytecode="14" endBytecode="14" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+  </BugInstance>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" rank="17" abbrev="DMI" category="STYLE">
+    <Class classname="cml.LoadNISTControlsAction">
+      <SourceLine classname="cml.LoadNISTControlsAction" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Class>
+    <Method classname="cml.LoadNISTControlsAction" name="extracteSecurityControlAssessments" signature="(Lcontrols/nist/rev4/ControlAssessmentParser;)V" isStatic="true">
+      <SourceLine classname="cml.LoadNISTControlsAction" start="150" end="166" startBytecode="0" endBytecode="31" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Method>
+    <String value="S:\\References\\NIST\\NIST_SP_800_53a\\800-53a-objectives.xml" role="FILE_NAME"/>
+    <SourceLine classname="cml.LoadNISTControlsAction" start="150" end="150" startBytecode="7" endBytecode="7" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" priority="2" rank="11" abbrev="RCN" category="CORRECTNESS">
+    <Class classname="cml.LoadNISTControlsAction">
+      <SourceLine classname="cml.LoadNISTControlsAction" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Class>
+    <Method classname="cml.LoadNISTControlsAction" name="actionPerformed" signature="(Ljava/awt/event/ActionEvent;)V" isStatic="false">
+      <SourceLine classname="cml.LoadNISTControlsAction" start="60" end="142" startBytecode="0" endBytecode="1806" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Method>
+    <LocalVariable name="project" register="9" pc="151" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <Method classname="com.nomagic.magicdraw.core.Application" name="getProject" signature="()Lcom/nomagic/magicdraw/core/Project;" isStatic="false" role="METHOD_RETURN_VALUE_OF">
+      <SourceLine classname="com.nomagic.magicdraw.core.Application"/>
+    </Method>
+    <SourceLine classname="cml.LoadNISTControlsAction" start="82" end="82" startBytecode="146" endBytecode="146" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    <SourceLine classname="cml.LoadNISTControlsAction" start="83" end="83" startBytecode="153" endBytecode="153" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="2" rank="17" abbrev="REC" category="STYLE">
+    <Class classname="cml.LoadNISTControlsAction">
+      <SourceLine classname="cml.LoadNISTControlsAction" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Class>
+    <Method classname="cml.LoadNISTControlsAction" name="actionPerformed" signature="(Ljava/awt/event/ActionEvent;)V" isStatic="false">
+      <SourceLine classname="cml.LoadNISTControlsAction" start="60" end="142" startBytecode="0" endBytecode="1806" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Method>
+    <SourceLine classname="cml.LoadNISTControlsAction" start="139" end="139" startBytecode="721" endBytecode="721" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" rank="20" abbrev="REC" category="STYLE">
+    <Class classname="cml.LoadNISTControlsAction">
+      <SourceLine classname="cml.LoadNISTControlsAction" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Class>
+    <Method classname="cml.LoadNISTControlsAction" name="extracteSecurityControlAssessments" signature="(Lcontrols/nist/rev4/ControlAssessmentParser;)V" isStatic="true">
+      <SourceLine classname="cml.LoadNISTControlsAction" start="150" end="166" startBytecode="0" endBytecode="213" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+    </Method>
+    <SourceLine classname="cml.LoadNISTControlsAction" start="163" end="163" startBytecode="65" endBytecode="65" sourcefile="LoadNISTControlsAction.java" sourcepath="cml/LoadNISTControlsAction.java"/>
+  </BugInstance>
+  <BugInstance type="NM_CLASS_NAMING_CONVENTION" priority="2" rank="16" abbrev="Nm" category="BAD_PRACTICE">
+    <Class classname="cml.cMLPlugin">
+      <SourceLine classname="cml.cMLPlugin" start="15" end="52" sourcefile="cMLPlugin.java" sourcepath="cml/cMLPlugin.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="NP_LOAD_OF_KNOWN_NULL_VALUE" priority="2" rank="16" abbrev="NP" category="STYLE">
+    <Class classname="controls.nist.rev4.ControlAssessmentParser">
+      <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+    </Class>
+    <Method classname="controls.nist.rev4.ControlAssessmentParser" name="extendControl" signature="(Lorg/w3c/dom/Node;)V" isStatic="false">
+      <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" start="58" end="96" startBytecode="0" endBytecode="125" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+    </Method>
+    <LocalVariable name="control" register="5" pc="175" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" start="79" end="79" startBytecode="178" endBytecode="178" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+  </BugInstance>
+  <BugInstance type="NP_LOAD_OF_KNOWN_NULL_VALUE" priority="3" rank="19" abbrev="NP" category="STYLE">
+    <Class classname="controls.nist.rev4.ControlAssessmentParser">
+      <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+    </Class>
+    <Method classname="controls.nist.rev4.ControlAssessmentParser" name="extendControlEnhancement" signature="(Ljava/util/List;Lorg/w3c/dom/Node;)V" isStatic="false">
+      <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" start="192" end="219" startBytecode="0" endBytecode="78" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+    </Method>
+    <LocalVariable name="title" register="3" pc="107" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" start="208" end="208" startBytecode="110" endBytecode="110" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" priority="3" rank="20" abbrev="RCN" category="STYLE">
+    <Class classname="controls.nist.rev4.ControlAssessmentParser">
+      <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+    </Class>
+    <Method classname="controls.nist.rev4.ControlAssessmentParser" name="extendControl" signature="(Lorg/w3c/dom/Node;)V" isStatic="false">
+      <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" start="58" end="96" startBytecode="0" endBytecode="606" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java"/>
+    </Method>
+    <LocalVariable name="control" register="5" pc="178" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="controls.nist.rev4.ControlAssessmentParser" start="79" end="79" startBytecode="180" endBytecode="180" sourcefile="ControlAssessmentParser.java" sourcepath="controls/nist/rev4/ControlAssessmentParser.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" rank="19" abbrev="Se" category="BAD_PRACTICE">
+    <Class classname="controls.nist.rev4.ControlNumberSorter">
+      <SourceLine classname="controls.nist.rev4.ControlNumberSorter" start="1" end="13" sourcefile="ControlNumberSorter.java" sourcepath="controls/nist/rev4/ControlNumberSorter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" rank="17" abbrev="DMI" category="STYLE">
+    <Class classname="xmlReader.Main">
+      <SourceLine classname="xmlReader.Main" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Class>
+    <Method classname="xmlReader.Main" name="extracteCCIs" signature="(Lcontrols/ia/ccis/CCI_ItemParser;)V" isStatic="true">
+      <SourceLine classname="xmlReader.Main" start="96" end="104" startBytecode="0" endBytecode="25" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Method>
+    <String value="S:\\References\\CCIs\\u_cci_list\\U_CCI_List.xml" role="FILE_NAME"/>
+    <SourceLine classname="xmlReader.Main" start="96" end="96" startBytecode="6" endBytecode="6" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+  </BugInstance>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" rank="17" abbrev="DMI" category="STYLE">
+    <Class classname="xmlReader.Main">
+      <SourceLine classname="xmlReader.Main" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Class>
+    <Method classname="xmlReader.Main" name="extracteSecurityControlAssessments" signature="(Lcontrols/nist/rev4/ControlAssessmentParser;)V" isStatic="true">
+      <SourceLine classname="xmlReader.Main" start="75" end="92" startBytecode="0" endBytecode="31" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Method>
+    <String value="S:\\References\\NIST\\NIST_SP_800_53a\\800-53a-objectives.xml" role="FILE_NAME"/>
+    <SourceLine classname="xmlReader.Main" start="75" end="75" startBytecode="6" endBytecode="6" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+  </BugInstance>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" rank="17" abbrev="DMI" category="STYLE">
+    <Class classname="xmlReader.Main">
+      <SourceLine classname="xmlReader.Main" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Class>
+    <Method classname="xmlReader.Main" name="extracteSecurityControls" signature="(Lcontrols/nist/rev4/ControlParser;)V" isStatic="true">
+      <SourceLine classname="xmlReader.Main" start="55" end="71" startBytecode="0" endBytecode="31" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Method>
+    <String value="S:\\References\\NIST\\NIST_SP_800-53\\800-53-controls-mod-pm-priorities-added.xml" role="FILE_NAME"/>
+    <SourceLine classname="xmlReader.Main" start="55" end="55" startBytecode="6" endBytecode="6" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" rank="20" abbrev="REC" category="STYLE">
+    <Class classname="xmlReader.Main">
+      <SourceLine classname="xmlReader.Main" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Class>
+    <Method classname="xmlReader.Main" name="extracteCCIs" signature="(Lcontrols/ia/ccis/CCI_ItemParser;)V" isStatic="true">
+      <SourceLine classname="xmlReader.Main" start="96" end="104" startBytecode="0" endBytecode="194" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Method>
+    <SourceLine classname="xmlReader.Main" start="101" end="101" startBytecode="42" endBytecode="42" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" rank="20" abbrev="REC" category="STYLE">
+    <Class classname="xmlReader.Main">
+      <SourceLine classname="xmlReader.Main" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Class>
+    <Method classname="xmlReader.Main" name="extracteSecurityControlAssessments" signature="(Lcontrols/nist/rev4/ControlAssessmentParser;)V" isStatic="true">
+      <SourceLine classname="xmlReader.Main" start="75" end="92" startBytecode="0" endBytecode="212" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Method>
+    <SourceLine classname="xmlReader.Main" start="89" end="89" startBytecode="64" endBytecode="64" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" rank="20" abbrev="REC" category="STYLE">
+    <Class classname="xmlReader.Main">
+      <SourceLine classname="xmlReader.Main" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Class>
+    <Method classname="xmlReader.Main" name="extracteSecurityControls" signature="(Lcontrols/nist/rev4/ControlParser;)V" isStatic="true">
+      <SourceLine classname="xmlReader.Main" start="55" end="71" startBytecode="0" endBytecode="212" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+    </Method>
+    <SourceLine classname="xmlReader.Main" start="68" end="68" startBytecode="64" endBytecode="64" sourcefile="Main.java" sourcepath="xmlReader/Main.java"/>
+  </BugInstance>
+  <Errors errors="0" missingClasses="20">
+    <MissingClass>com.nomagic.actions.AMConfigurator</MissingClass>
+    <MissingClass>com.nomagic.actions.ActionsCategory</MissingClass>
+    <MissingClass>com.nomagic.actions.ActionsManager</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.actions.ActionsConfiguratorsManager</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.actions.MDAction</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.actions.MDActionsCategory</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.core.Application</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.core.Project</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.openapi.uml.SessionManager</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.plugins.Plugin</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.uml.Finder</MissingClass>
+    <MissingClass>com.nomagic.magicdraw.uml.Finder$ByNameRecursivelyFinder</MissingClass>
+    <MissingClass>com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper</MissingClass>
+    <MissingClass>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class</MissingClass>
+    <MissingClass>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration</MissingClass>
+    <MissingClass>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral</MissingClass>
+    <MissingClass>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package</MissingClass>
+    <MissingClass>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.PackageableElement</MissingClass>
+    <MissingClass>com.nomagic.uml2.impl.ElementsFactory</MissingClass>
+  </Errors>
+  <FindBugsSummary timestamp="Sun, 27 Oct 2019 18:43:26 -0500" total_classes="21" referenced_classes="71" total_bugs="18" total_size="936" num_packages="4" java_version="1.8.0_221" vm_version="25.221-b11" cpu_seconds="37.81" clock_seconds="170.61" peak_mbytes="204.73" alloc_mbytes="683.00" gc_seconds="0.07" priority_3="7" priority_2="11">
+    <PackageStats package="cml" total_bugs="8" total_types="5" total_size="175" priority_3="2" priority_2="6">
+      <ClassStats class="cml.IACCIsAction" sourceFile="IACCIsAction.java" interface="false" size="16" bugs="2" priority_3="1" priority_2="1"/>
+      <ClassStats class="cml.LoadNISTControlsAction" sourceFile="LoadNISTControlsAction.java" interface="false" size="83" bugs="5" priority_3="1" priority_2="4"/>
+      <ClassStats class="cml.MDElementFactory" sourceFile="MDElementFactory.java" interface="false" size="42" bugs="0"/>
+      <ClassStats class="cml.MainMenuConfigurator" sourceFile="MainMenuConfigurator.java" interface="false" size="18" bugs="0"/>
+      <ClassStats class="cml.cMLPlugin" sourceFile="cMLPlugin.java" interface="false" size="16" bugs="1" priority_2="1"/>
+    </PackageStats>
+    <PackageStats package="controls.ia.ccis" total_bugs="0" total_types="3" total_size="139">
+      <ClassStats class="controls.ia.ccis.CCI_Item" sourceFile="CCI_Item.java" interface="false" size="39" bugs="0"/>
+      <ClassStats class="controls.ia.ccis.CCI_ItemParser" sourceFile="CCI_ItemParser.java" interface="false" size="76" bugs="0"/>
+      <ClassStats class="controls.ia.ccis.Reference" sourceFile="Reference.java" interface="false" size="24" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="controls.nist.rev4" total_bugs="4" total_types="12" total_size="581" priority_3="2" priority_2="2">
+      <ClassStats class="controls.nist.rev4.Control" sourceFile="Control.java" interface="false" size="29" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.ControlAssessmentParser" sourceFile="ControlAssessmentParser.java" interface="false" size="124" bugs="3" priority_3="2" priority_2="1"/>
+      <ClassStats class="controls.nist.rev4.ControlEnhancement" sourceFile="ControlEnhancement.java" interface="false" size="21" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.ControlNumberSorter" sourceFile="ControlNumberSorter.java" interface="false" size="7" bugs="1" priority_2="1"/>
+      <ClassStats class="controls.nist.rev4.ControlParser" sourceFile="ControlParser.java" interface="false" size="154" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.NISTElementFactory" sourceFile="NISTElementFactory.java" interface="false" size="204" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.Objective" sourceFile="Objective.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.PotentialAssessment" sourceFile="PotentialAssessment.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.Reference" sourceFile="Reference.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.Statement" sourceFile="Statement.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.SupplementalGuidance" sourceFile="SupplementalGuidance.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="controls.nist.rev4.Withdrawn" sourceFile="Withdrawn.java" interface="false" size="5" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="xmlReader" total_bugs="6" total_types="1" total_size="41" priority_3="3" priority_2="3">
+      <ClassStats class="xmlReader.Main" sourceFile="Main.java" interface="false" size="41" bugs="6" priority_3="3" priority_2="3"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="1039" invocations="790" avgMicrosecondsPerInvocation="1316" maxMicrosecondsPerInvocation="4520" standardDeviationMircosecondsPerInvocation="634"/>
+      <ClassProfile name="edu.umd.cs.findbugs.FindBugs2" totalMilliseconds="492" invocations="2" avgMicrosecondsPerInvocation="246134" maxMicrosecondsPerInvocation="332137" standardDeviationMircosecondsPerInvocation="86003"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="265" invocations="786" avgMicrosecondsPerInvocation="338" maxMicrosecondsPerInvocation="16755" standardDeviationMircosecondsPerInvocation="841"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.UnconditionalValueDerefDataflowFactory" totalMilliseconds="130" invocations="80" avgMicrosecondsPerInvocation="1630" maxMicrosecondsPerInvocation="19959" standardDeviationMircosecondsPerInvocation="3062"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="117" invocations="71" avgMicrosecondsPerInvocation="1657" maxMicrosecondsPerInvocation="15558" standardDeviationMircosecondsPerInvocation="3338"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="116" invocations="80" avgMicrosecondsPerInvocation="1452" maxMicrosecondsPerInvocation="11021" standardDeviationMircosecondsPerInvocation="2134"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ValueNumberDataflowFactory" totalMilliseconds="113" invocations="81" avgMicrosecondsPerInvocation="1397" maxMicrosecondsPerInvocation="13210" standardDeviationMircosecondsPerInvocation="2566"/>
+      <ClassProfile name="edu.umd.cs.findbugs.ba.npe.NullDerefAndRedundantComparisonFinder" totalMilliseconds="111" invocations="79" avgMicrosecondsPerInvocation="1405" maxMicrosecondsPerInvocation="15577" standardDeviationMircosecondsPerInvocation="2235"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.TypeDataflowFactory" totalMilliseconds="108" invocations="81" avgMicrosecondsPerInvocation="1334" maxMicrosecondsPerInvocation="10609" standardDeviationMircosecondsPerInvocation="2188"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="82" invocations="333" avgMicrosecondsPerInvocation="246" maxMicrosecondsPerInvocation="3694" standardDeviationMircosecondsPerInvocation="357"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="81" invocations="71" avgMicrosecondsPerInvocation="1154" maxMicrosecondsPerInvocation="14256" standardDeviationMircosecondsPerInvocation="2130"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.CFGFactory" totalMilliseconds="71" invocations="80" avgMicrosecondsPerInvocation="895" maxMicrosecondsPerInvocation="13592" standardDeviationMircosecondsPerInvocation="2096"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindRefComparison$SpecialTypeAnalysis" totalMilliseconds="61" invocations="73" avgMicrosecondsPerInvocation="847" maxMicrosecondsPerInvocation="11300" standardDeviationMircosecondsPerInvocation="1433"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="55" invocations="80" avgMicrosecondsPerInvocation="692" maxMicrosecondsPerInvocation="40275" standardDeviationMircosecondsPerInvocation="4457"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

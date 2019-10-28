@@ -2,7 +2,7 @@
 <plugin
         id="cml"
         name="cML"
-        version="1.0"
+        version="0.3"
         provider-name="Sean C. Hubbell"
         class="cml.cMLPlugin">
 

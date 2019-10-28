@@ -1,13 +1,13 @@
 /* Copyright Sean C. Hubbell All Rights Reserved */
 package controls.nist.rev4;
 
+/**
+ * The Reference class is the data provided from NIST SP 800-53 and 800-53a.
+ * Revision 4.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 public class Reference {
-	public String item = new String();
-	
-	private static String sindent = "  ";
-	
-	public void print(String indent) {
-		System.out.println(indent + "reference");
-			System.out.println(indent + sindent + "item=" + item);
-	}
+	public String item = null;
 }

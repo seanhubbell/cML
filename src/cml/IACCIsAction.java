@@ -26,6 +26,7 @@ import controls.ia.ccis.CCI_ItemParser;
  * @author Sean C. Hubbell
  *
  */
+@SuppressWarnings("serial")
 class IACCIsAction extends MDAction {
 	public CCI_ItemParser parser = new CCI_ItemParser();
 

@@ -11,7 +11,7 @@ import org.w3c.dom.NodeList;
 
 import controls.nist.rev4.ControlAssessmentParser;
 import controls.nist.rev4.ControlParser;
-import controls.nist.rev4.SortControls;
+import controls.nist.rev4.ControlNumberSorter;
 
 class Main {
 
@@ -24,7 +24,7 @@ class Main {
 		ControlAssessmentParser caparser = new ControlAssessmentParser(parser.getControls());
 		extracteSecurityControlAssessments(caparser);
 
-		Collections.sort(parser.getControls(), new SortControls());
+		Collections.sort(parser.getControls(), new ControlNumberSorter());
 
 		// for (Control c : parser.getControls()) {
 		// if(c.isWithdrawn())

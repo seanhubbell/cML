@@ -1,21 +1,38 @@
 /* Copyright Sean C. Hubbell All Rights Reserved */
 package controls.nist.rev4;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * The Control Parser extracts the data from the NIST SP 800-53 Revision 4 and
+ * then populates the controls with the data.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 public class ControlParser {
 
 	private ArrayList<Control> controls = new ArrayList<Control>();
-	
+
+	/**
+	 * Gets the security controls.
+	 * 
+	 * @return the security controls.
+	 */
 	public ArrayList<Control> getControls() {
 		return controls;
 	}
 
+	/**
+	 * Parse the security controls from the given children and populate the member
+	 * controls with the results.
+	 * 
+	 * @param children the children containing the control data.
+	 */
 	public void parse(NodeList children) {
 		for (int count = 0; count < children.getLength(); count++) {
 			Node child = children.item(count);
@@ -31,7 +48,13 @@ public class ControlParser {
 		}
 	}
 
-	public Control parseControl(Node node) {
+	/**
+	 * Parse the security control from the given node and populate the appropriate
+	 * member control with the results.
+	 * 
+	 * @param node the node containing the security control data.
+	 */
+	private Control parseControl(Node node) {
 		Control result = new Control();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -62,13 +85,18 @@ public class ControlParser {
 				} else {
 					System.err.println("Parsing control unknown node: " + child.getNodeName());
 				}
-
 			}
 		}
 		return result;
 	}
 
-	public Statement parseStatement(Node node) {
+	/**
+	 * Parse the statement from the given node.
+	 * 
+	 * @param node the node containing the statement data.
+	 * @return the newly created statement containing the data from the node.
+	 */
+	private Statement parseStatement(Node node) {
 		Statement result = new Statement();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -90,7 +118,14 @@ public class ControlParser {
 		return result;
 	}
 
-	public SupplementalGuidance parseSupplementalGuidance(Node node) {
+	/**
+	 * Parse the supplemental guidance from the given node.
+	 * 
+	 * @param node the node containing the supplemental guidance data.
+	 * @return the newly created supplemental guidance containing the data from the
+	 *         node.
+	 */
+	private SupplementalGuidance parseSupplementalGuidance(Node node) {
 		SupplementalGuidance result = new SupplementalGuidance();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -110,7 +145,14 @@ public class ControlParser {
 		return result;
 	}
 
-	public List<ControlEnhancement> parseControlEnhancements(Node node) {
+	/**
+	 * Parse the control enhancements from the given node.
+	 * 
+	 * @param node the node containing the control enhancements data.
+	 * @return the newly created control enhancements containing the data from the
+	 *         node otherwise an empty list is returned.
+	 */
+	private List<ControlEnhancement> parseControlEnhancements(Node node) {
 		List<ControlEnhancement> result = new ArrayList<ControlEnhancement>();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -128,7 +170,14 @@ public class ControlParser {
 		return result;
 	}
 
-	public ControlEnhancement parseControlEnhancement(Node node) {
+	/**
+	 * Parse the control enhancement from the given node.
+	 * 
+	 * @param node the node containing the control enhancement data.
+	 * @return the newly created control enhancement containing the data from the
+	 *         node.
+	 */
+	private ControlEnhancement parseControlEnhancement(Node node) {
 		ControlEnhancement result = new ControlEnhancement();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -156,7 +205,13 @@ public class ControlParser {
 		return result;
 	}
 
-	public List<Reference> parseReferences(Node node) {
+	/**
+	 * Parse the references from the given node.
+	 * 
+	 * @param node the node containing the references data.
+	 * @return the newly created references containing the data from the node.
+	 */
+	private List<Reference> parseReferences(Node node) {
 		List<Reference> result = new ArrayList<Reference>();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -174,7 +229,13 @@ public class ControlParser {
 		return result;
 	}
 
-	public Reference parseReference(Node node) {
+	/**
+	 * Parse the reference from the given node.
+	 * 
+	 * @param node the node containing the reference data.
+	 * @return the newly created reference containing the data from the node.
+	 */
+	private Reference parseReference(Node node) {
 		Reference result = new Reference();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {
@@ -192,25 +253,13 @@ public class ControlParser {
 		return result;
 	}
 
-	public String parseItem(Node node) {
-		String result = new String();
-		NodeList children = node.getChildNodes();
-		for (int count = 0; count < children.getLength(); count++) {
-			Node child = children.item(count);
-			if (child.getNodeType() == Node.ELEMENT_NODE) {
-				if (child.getNodeName().equals("#text")) {
-					continue;
-				} else if (child.getNodeName().equals("item")) {
-					result = child.getChildNodes().item(0).getNodeValue();
-				} else {
-					System.err.println("Parsing item unknown node: " + child.getNodeName());
-				}
-			}
-		}
-		return result;
-	}
-
-	public Withdrawn parseWithdrawn(Node node) {
+	/**
+	 * Parse the withdrawn from the given node.
+	 * 
+	 * @param node the node containing the withdrawn data.
+	 * @return the newly created withdrawn containing the data from the node.
+	 */
+	private Withdrawn parseWithdrawn(Node node) {
 		Withdrawn result = new Withdrawn();
 		NodeList children = node.getChildNodes();
 		for (int count = 0; count < children.getLength(); count++) {

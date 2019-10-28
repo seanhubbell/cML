@@ -1,29 +1,18 @@
 /* Copyright Sean C. Hubbell All Rights Reserved */
 package controls.nist.rev4;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Objective class is the data provided from NIST SP 800-53 and 800-53a.
+ * Revision 4.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 public class Objective {
-	public String number = new String();
-	public String decision = new String();
+	public String number = null;
+	public String decision = null;
 	public List<Objective> objectives = new ArrayList<Objective>();
-	
-	private static String sindent = "  ";
-	
-	public void print(String indent) {
-		System.out.println(indent + "objective");
-		if (number != null && !number.equals(""))
-			System.out.println(indent + sindent +"number=" + number);
-
-		if (decision != null && !decision.equals(""))
-			System.out.println(indent + sindent +"decision=" + decision);
-
-		if (objectives != null && objectives.size() > 0) {
-			System.out.println(indent + sindent + "objectives");
-			for (Objective o : objectives)
-				o.print(indent + sindent + sindent);
-		}
-	}
 }

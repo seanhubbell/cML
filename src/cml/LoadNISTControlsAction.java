@@ -29,6 +29,11 @@ import controls.nist.rev4.ControlAssessmentParser;
 import controls.nist.rev4.ControlParser;
 import controls.nist.rev4.NISTElementFactory;
 
+/**
+ *  The Load NIST Controls Action is the action that will parse the NIST SP 800-54 and NIST SP 800-53a Revision 4 files.
+ * @author Sean C. Hubbell
+ *
+ */
 @SuppressWarnings("serial")
 class LoadNISTControlsAction extends MDAction {
 	private Package controlsFolder = null;
@@ -37,14 +42,22 @@ class LoadNISTControlsAction extends MDAction {
 	private MDElementFactory factory = null;
 	private NISTElementFactory nistFactory = null;
 
+	/**
+	 * Loads the NIST Control actions
+	 * @param id - the menu id.
+	 * @param name - the menu name.
+	 */
 	public LoadNISTControlsAction(@CheckForNull String id, String name) {
 		super(id, name, null, null);
 	}
 
+	/**
+	 * The callback for the invocation of the loading of the NIST Controls.
+	 * @param e - the action event.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ControlParser parser = new ControlParser();
-
 		try {
 			File file = new File("S:\\References\\NIST\\NIST_SP_800-53\\800-53-controls-mod-pm-priorities-added.xml");
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -59,7 +72,6 @@ class LoadNISTControlsAction extends MDAction {
 					parser.parse(doc.getChildNodes());
 				}
 			}
-
 			ControlAssessmentParser caparser = new ControlAssessmentParser(parser.getControls());
 			extracteSecurityControlAssessments(caparser);
 
@@ -68,7 +80,7 @@ class LoadNISTControlsAction extends MDAction {
 
 			Project project = Application.getInstance().getProject();
 			Package model = project.getPrimaryModel();
-			if (project != null) {
+			if (project != null && model != null) {
 				SessionManager.getInstance().createSession(project, "Generating NIST SP Rev 4 Security Controls");
 				Stereotype controlStereotype = StereotypesHelper.getStereotype(project, "Security Control",
 						(Profile) null);
@@ -101,16 +113,25 @@ class LoadNISTControlsAction extends MDAction {
 				nistFactory = new NISTElementFactory(factory, prioritiesFolder, controlsFolder, baselineImpactsFolder);
 
 				for (Control control : controls) {
+					try {
 					factory.createPackage(control.family, controlsFolder);
 					Package familyFolder = factory.createPackage(control.family, controlsFolder);
 					Package controlNumFolder = factory.createPackage(control.number, familyFolder);
 					factory.createClass(controlNumFolder, control.number, controlStereotype);
+					} catch (Exception ex) {
+						System.err.println("Failed creating controls. Error (" + control.number + "): " + ex.getMessage());
+					}
 				}
 
 				for (Control control : controls) {
-					nistFactory.createControl(controlStereotype, baselineImpactStereotype, statementStereotype,
-							supplementalGuidanceStereotype, controlEnhancementStereotype, referenceStereotype,
-							withdrawnStereotype, objectiveStereotype, potentialAssessmentStereotype, control);
+					try {
+						nistFactory.createControl(controlStereotype, baselineImpactStereotype, statementStereotype,
+								supplementalGuidanceStereotype, controlEnhancementStereotype, referenceStereotype,
+								withdrawnStereotype, objectiveStereotype, potentialAssessmentStereotype, control);
+						System.out.println("Populating control : " + control.number);
+					} catch (Exception ex) {
+						System.err.println("Failed populating controls. Error (" + control.number + "): " + ex.getMessage());
+					}
 				}
 				SessionManager.getInstance().closeSession(project);
 			}
@@ -121,8 +142,8 @@ class LoadNISTControlsAction extends MDAction {
 	}
 
 	/**
-	 * 
-	 * @param parser
+	 * Extract the security control assessment.
+	 * @param parser - the parser to used to extract the security control assessments from NIST SP 800-53a rev. 4.
 	 */
 	private static void extracteSecurityControlAssessments(ControlAssessmentParser parser) {
 		try {
@@ -139,9 +160,9 @@ class LoadNISTControlsAction extends MDAction {
 					parser.extend(doc.getChildNodes());
 				}
 			}
-
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }
