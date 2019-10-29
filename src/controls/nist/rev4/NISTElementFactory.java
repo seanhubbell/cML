@@ -163,7 +163,7 @@ public class NISTElementFactory {
 		if (control.potentialAssessments != null && control.potentialAssessments.size() > 0) {
 			folder = factory.createPackage("Potential Assessments", controlNumFolder);
 			items = createPotentialAssessments(folder, potentialAssessmentStereotype, control.potentialAssessments);
-			StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Potential Assessment", items,
+			StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Potential Assessments", items,
 					true);
 		}
 	}
@@ -425,7 +425,8 @@ public class NISTElementFactory {
 		ArrayList<Class> result = new ArrayList<Class>();
 
 		for (Objective objective : objectives) {
-			Class objectiveClass = factory.createClass(folder, objective.number, objectiveStereotype);
+			String name = (objective.number != null) ? objective.number : objective.decision;
+			Class objectiveClass = factory.createClass(folder, name, objectiveStereotype);
 			if (objective.number != null) {
 				StereotypesHelper.setStereotypePropertyValue(objectiveClass, objectiveStereotype, "Number",
 						objective.number, true);

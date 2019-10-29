@@ -87,6 +87,7 @@ public class ControlAssessmentParser {
 					if (child.getNodeName().equals("objective")) {
 						control.objectives.add(parseObjective(child));
 					} else if (child.getNodeName().equals("potential-assessments")) {
+						System.out.println("control: " + control.number + " -- parsePotentialAssessments");
 						control.potentialAssessments = parsePotentialAssessments(child);
 					} else if (child.getNodeName().equals("control-enhancements")) {
 						extendControlEnhancements(control.controlEnhancements, child);
@@ -95,28 +96,28 @@ public class ControlAssessmentParser {
 			}
 		}
 	}
-
+	
 	/**
 	 * Parse the objective from the given node.
 	 * 
 	 * @param node the node containing the objective data.
 	 */
 	private Objective parseObjective(Node node) {
-		Objective result = new Objective();
+		Objective obj = new Objective();
 		NodeList children = node.getChildNodes();
-		for (int count = 0; count < children.getLength(); count++) {
-			Node child = children.item(count);
+		for (int i = 0; i < children.getLength(); i++) {
+			Node child = children.item(i);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("decision")) {
-					result.decision = child.getChildNodes().item(0).getNodeValue();
+					obj.decision = child.getChildNodes().item(0).getNodeValue();
 				} else if (child.getNodeName().equals("number")) {
-					result.number = child.getChildNodes().item(0).getNodeValue();
+					obj.number = child.getChildNodes().item(0).getNodeValue();
 				} else if (child.getNodeName().equals("objective")) {
-					result.objectives.add(parseObjective(child));
+					obj.objectives.add(parseObjective(child));
 				}
 			}
 		}
-		return result;
+		return obj;
 	}
 
 	/**
@@ -154,8 +155,9 @@ public class ControlAssessmentParser {
 		Element elem = (Element) node;
 		result.method = elem.getAttribute("method");
 		
-		for (int count = 0; count < children.getLength(); count++) {
-			Node child = children.item(count);
+		for (int i = 0; i < children.getLength(); i++) {
+			Node child = children.item(i);
+			
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("object")) {
 					try {

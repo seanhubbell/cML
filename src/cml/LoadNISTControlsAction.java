@@ -72,8 +72,13 @@ class LoadNISTControlsAction extends MDAction {
 					parser.parse(doc.getChildNodes());
 				}
 			}
-			ControlAssessmentParser caparser = new ControlAssessmentParser(parser.getControls());
-			extracteSecurityControlAssessments(caparser);
+
+			try {
+				ControlAssessmentParser caparser = new ControlAssessmentParser(parser.getControls());
+				extracteSecurityControlAssessments(caparser);
+			} catch (Exception ex) {
+				System.err.println("Failed adding NIST SP 800 53a items. Error: " + ex.getMessage());
+			}
 
 			// JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogOwner(),
 			// parser.getControls().size() + " Security Controls Loaded");
