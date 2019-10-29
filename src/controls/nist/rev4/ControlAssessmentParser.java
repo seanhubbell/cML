@@ -87,7 +87,6 @@ public class ControlAssessmentParser {
 					if (child.getNodeName().equals("objective")) {
 						control.objectives.add(parseObjective(child));
 					} else if (child.getNodeName().equals("potential-assessments")) {
-						System.out.println("control: " + control.number + " -- parsePotentialAssessments");
 						control.potentialAssessments = parsePotentialAssessments(child);
 					} else if (child.getNodeName().equals("control-enhancements")) {
 						extendControlEnhancements(control.controlEnhancements, child);
@@ -130,7 +129,7 @@ public class ControlAssessmentParser {
 	private List<PotentialAssessment> parsePotentialAssessments(Node node) {
 		List<PotentialAssessment> result = new ArrayList<PotentialAssessment>();
 		NodeList children = node.getChildNodes();
-		for (int count = 0; count < children.getLength(); count++) {
+		for (Integer count = 0; count < children.getLength(); count++) {
 			Node child = children.item(count);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("potential-assessment")) {
@@ -155,9 +154,8 @@ public class ControlAssessmentParser {
 		Element elem = (Element) node;
 		result.method = elem.getAttribute("method");
 		
-		for (int i = 0; i < children.getLength(); i++) {
+		for (Integer i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
-			
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("object")) {
 					try {
@@ -179,7 +177,7 @@ public class ControlAssessmentParser {
 	 */
 	private void extendControlEnhancements(List<ControlEnhancement> controlEnhancements, Node node) {
 		NodeList children = node.getChildNodes();
-		for (int count = 0; count < children.getLength(); count++) {
+		for (Integer count = 0; count < children.getLength(); count++) {
 			Node child = children.item(count);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("control-enhancement")) {
@@ -200,10 +198,9 @@ public class ControlAssessmentParser {
 		ControlEnhancement match = null;
 
 		NodeList children = node.getChildNodes();
-		for (int count = 0; count < children.getLength(); count++) {
+		for (Integer count = 0; count < children.getLength(); count++) {
 			Node child = children.item(count);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
-
 				if (match == null) {
 					if (child.getNodeName().equals("number")) {
 						number = child.getChildNodes().item(0).getNodeValue();
