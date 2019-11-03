@@ -104,7 +104,7 @@ class LoadNISTControlsAction extends MDAction {
 
 				ArrayList<Control> controls = parser.getControls();
 				factory = new MDElementFactory(project);
-				controlsFolder = factory.createPackage("NIST SP 800-53 Rev 4", model);
+				controlsFolder = factory.createPackage("NIST Security Controls (53 & 53a Rev. 4)", model);
 
 				Package baseFolder = factory.createPackage("base", controlsFolder);
 

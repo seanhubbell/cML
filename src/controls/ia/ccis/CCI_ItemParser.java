@@ -4,6 +4,8 @@ package controls.ia.ccis;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -11,7 +13,7 @@ import org.w3c.dom.NodeList;
 public class CCI_ItemParser {
 
 	private ArrayList<CCI_Item> ccis = new ArrayList<CCI_Item>();
-
+	
 	public ArrayList<CCI_Item> getCCIs() {
 		return ccis;
 	}
@@ -22,7 +24,6 @@ public class CCI_ItemParser {
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("cci_item")) {
 					CCI_Item item = parseCCIItem(child);
-					item.print("  ");
 					ccis.add(item);
 				}
 
@@ -35,12 +36,14 @@ public class CCI_ItemParser {
 
 	private CCI_Item parseCCIItem(Node node) {
 		CCI_Item result = new CCI_Item();
+
+		Element elem = (Element) node;
+		result.id = elem.getAttribute("id");		
 		NodeList children = node.getChildNodes();
+
 		for (int count = 0; count < children.getLength(); count++) {
 			Node child = children.item(count);
-			Element elem = (Element) node;
-			result.id = elem.getAttribute("id");
-			
+	
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals("#text")) {
 					continue;
@@ -85,6 +88,7 @@ public class CCI_ItemParser {
 				if (child.getNodeName().equals("#text")) {
 					continue;
 				} else if (child.getNodeName().equals("reference")) {
+					System.out.println("parsing reference");
 					result.add(parseReference(child));
 				} else {
 					System.err.println("Parsing references unknown node: " + child.getNodeName());

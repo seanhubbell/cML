@@ -404,6 +404,8 @@ public class NISTElementFactory {
 		Class result = factory.createClass(folder, reference.item, referenceStereotype);
 		if (reference.item != null) {
 			StereotypesHelper.setStereotypePropertyValue(result, referenceStereotype, "Item", reference.item, true);
+		} else {
+			System.err.println("Reference item does not exist.");
 		}
 		return result;
 	}

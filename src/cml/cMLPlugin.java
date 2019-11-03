@@ -32,7 +32,8 @@ public class cMLPlugin extends Plugin {
 	private static NMAction getSubMenuActions() {
 		ActionsCategory category = new ActionsCategory(null, "Security Controls");
 		category.setNested(true);
-		category.addAction(new LoadNISTControlsAction(null, "Load NIST Security Controls"));
+		category.addAction(new LoadNISTControlsAction(null, "Load NIST Security Controls (53 & 53a Rev. 4)"));
+		category.addAction(new LoadCCIsAction(null, "Load CCIs (2016-06-27)"));
 		return category;
 	}
 
