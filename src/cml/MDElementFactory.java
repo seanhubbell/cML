@@ -4,8 +4,12 @@ package cml;
 import java.util.List;
 
 import com.nomagic.magicdraw.core.Project;
+import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
+import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
+import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
@@ -115,5 +119,21 @@ public class MDElementFactory {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Creates a Glossary Table Diagram.
+	 * @param parent the parent package to contain the diagram
+	 * @return the newly created glossary table diagram created or null;
+	 */
+	public Diagram createGlossaryTableDiagram(Package parent) {
+		Diagram result = null;
+		try {
+			result = ModelElementsManager.getInstance().createDiagram(DiagramTypeConstants.GLOSSARY_TABLE, parent);
+		} catch (ReadOnlyElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

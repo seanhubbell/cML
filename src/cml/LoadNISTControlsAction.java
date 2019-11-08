@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 
 import javax.annotation.CheckForNull;
 import javax.swing.JOptionPane;
@@ -19,7 +20,9 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
+import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
@@ -28,6 +31,7 @@ import controls.nist.rev4.Control;
 import controls.nist.rev4.ControlAssessmentParser;
 import controls.nist.rev4.ControlParser;
 import controls.nist.rev4.NISTElementFactory;
+import controls.nist.rev4.Statement;
 
 /**
  *  The Load NIST Controls Action is the action that will parse the NIST SP 800-54 and NIST SP 800-53a Revision 4 files.
@@ -135,9 +139,33 @@ class LoadNISTControlsAction extends MDAction {
 								withdrawnStereotype, objectiveStereotype, potentialAssessmentStereotype, control);
 						System.out.println("Populating control : " + control.number);
 					} catch (Exception ex) {
-						System.err.println("Failed populating controls. Error (" + control.number + "): " + ex.getMessage());
+						System.err.println(
+								"Failed populating controls. Error (" + control.number + "): " + ex.getMessage());
 					}
 				}
+
+				Package glossaryPackage = factory.createPackage("Glossary", controlsFolder);
+				Diagram glossary = factory.createGlossaryTableDiagram(glossaryPackage);
+				Stereotype termStereotype = StereotypesHelper.getStereotype(project, "Term", (Profile) null);
+				com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class term;
+
+				for (Control control : controls) {
+					term = factory.createClass(glossaryPackage, control.number, termStereotype);
+					ModelHelper.setComment(term, control.title);
+					ModelElementsManager.getInstance().addElement(glossary, term);
+
+					if (control.statements != null && control.statements.size() > 0) {
+						for (Statement statement : control.statements) {
+							if (statement.number != null && statement.description != null
+									&& !statement.number.equals("") && !statement.description.equals("")) {
+								term = factory.createClass(glossaryPackage, statement.number, termStereotype);
+								ModelHelper.setComment(term, statement.description);
+								ModelElementsManager.getInstance().addElement(glossary, term);
+							}
+						}
+					}
+				}
+
 				SessionManager.getInstance().closeSession(project);
 			}
 
