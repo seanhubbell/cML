@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.annotation.CheckForNull;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -63,8 +66,15 @@ class LoadCCIsAction extends MDAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		CCI_ItemParser parser = new CCI_ItemParser();
+		File file = null;
 		try {
-			File file = new File("S:\\References\\CCIs\\u_cci_list\\U_CCI_List.xml");
+			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			chooser.setDialogTitle("Select U_CCI_List.xml file");
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				file = chooser.getSelectedFile();
+			}
+			
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 

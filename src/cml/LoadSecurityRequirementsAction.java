@@ -6,7 +6,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.annotation.CheckForNull;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -24,7 +27,6 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
-import controls.nist.NISTElementFactory;
 import controls.nist.SecurityRequirement;
 import controls.nist.SecurityRequirementParser;
 
@@ -54,8 +56,15 @@ class LoadSecurityRequirementsAction extends MDAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SecurityRequirementParser parser = new SecurityRequirementParser();
+		File file = null;
 		try {
-			File file = new File("S:\\References\\NIST\\171 Appendix F - filtered.xml");
+			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			chooser.setDialogTitle("Select 171 Appendix F - filtered.xml");
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				file = chooser.getSelectedFile();
+			}
+			
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 

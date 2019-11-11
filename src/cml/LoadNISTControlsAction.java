@@ -8,7 +8,10 @@ import java.util.Arrays;
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 
 import javax.annotation.CheckForNull;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -62,8 +65,15 @@ class LoadNISTControlsAction extends MDAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ControlParser parser = new ControlParser();
+		File file = null;
 		try {
-			File file = new File("S:\\References\\NIST\\NIST_SP_800-53\\800-53-controls-mod-pm-priorities-added.xml");
+			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			chooser.setDialogTitle("Select 800-53-controls-mod-pm-priorities-added.xml");
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				file = chooser.getSelectedFile();
+			}
+			
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 
