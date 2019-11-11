@@ -63,6 +63,8 @@ class LoadSecurityRequirementsAction extends MDAction {
 			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
+			} else {
+				return;
 			}
 			
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

@@ -73,6 +73,8 @@ class LoadCCIsAction extends MDAction {
 			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
+			} else {
+				return;
 			}
 			
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -91,7 +93,7 @@ class LoadCCIsAction extends MDAction {
 			if (project != null && model != null) {
 				SessionManager.getInstance().createSession(project, "Generating CCIs");
 				Stereotype cci_ItemStereotype = StereotypesHelper.getStereotype(project, "CCI_Item", (Profile) null);
-				Stereotype referenceStereotype = StereotypesHelper.getStereotype(project, "Reference", (Profile) null);
+				Stereotype referenceStereotype = StereotypesHelper.getStereotype(project, "CCI:Reference", (Profile) null);
 
 				ArrayList<CCI_Item> ccis = parser.getCCIs();
 				factory = new MDElementFactory(project);

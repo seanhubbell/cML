@@ -72,6 +72,8 @@ class LoadNISTControlsAction extends MDAction {
 			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
+			} else {
+				return;
 			}
 			
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -190,8 +192,17 @@ class LoadNISTControlsAction extends MDAction {
 	 * @param parser - the parser to used to extract the security control assessments from NIST SP 800-53a rev. 4.
 	 */
 	private static void extracteSecurityControlAssessments(ControlAssessmentParser parser) {
+		File file = null;
 		try {
-			File file = new File("S:\\References\\NIST\\NIST_SP_800_53a\\800-53a-objectives.xml");
+			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			chooser.setDialogTitle("Select 800-53a-objectives.xmll");
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				file = chooser.getSelectedFile();
+			} else {
+				return;
+			}
+
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 
