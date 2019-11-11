@@ -9,9 +9,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import controls.nist.rev4.ControlAssessmentParser;
-import controls.nist.rev4.ControlParser;
-import controls.nist.rev4.ControlNumberSorter;
+import controls.nist.ControlAssessmentParser;
+import controls.nist.ControlNumberSorter;
+import controls.nist.ControlParser;
 
 class Main {
 

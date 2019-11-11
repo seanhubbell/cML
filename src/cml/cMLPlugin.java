@@ -34,6 +34,7 @@ public class cMLPlugin extends Plugin {
 		category.setNested(true);
 		category.addAction(new LoadNISTControlsAction(null, "Load NIST Security Controls (53 & 53a Rev. 4)"));
 		category.addAction(new LoadCCIsAction(null, "Load CCIs (2016-06-27)"));
+		category.addAction(new LoadSecurityRequirementsAction(null, "Load Security Requirements"));
 		return category;
 	}
 

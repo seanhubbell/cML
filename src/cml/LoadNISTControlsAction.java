@@ -27,11 +27,11 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
-import controls.nist.rev4.Control;
-import controls.nist.rev4.ControlAssessmentParser;
-import controls.nist.rev4.ControlParser;
-import controls.nist.rev4.NISTElementFactory;
-import controls.nist.rev4.Statement;
+import controls.nist.Control;
+import controls.nist.ControlAssessmentParser;
+import controls.nist.ControlParser;
+import controls.nist.NISTElementFactory;
+import controls.nist.Statement;
 
 /**
  *  The Load NIST Controls Action is the action that will parse the NIST SP 800-54 and NIST SP 800-53a Revision 4 files.
@@ -154,13 +154,14 @@ class LoadNISTControlsAction extends MDAction {
 					ModelHelper.setComment(term, control.title);
 					ModelElementsManager.getInstance().addElement(glossary, term);
 
+
 					if (control.statements != null && control.statements.size() > 0) {
 						for (Statement statement : control.statements) {
 							if (statement.number != null && statement.description != null
 									&& !statement.number.equals("") && !statement.description.equals("")) {
 								term = factory.createClass(glossaryPackage, statement.number, termStereotype);
 								ModelHelper.setComment(term, statement.description);
-								ModelElementsManager.getInstance().addElement(glossary, term);
+								
 							}
 						}
 					}
