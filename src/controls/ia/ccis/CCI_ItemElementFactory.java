@@ -11,25 +11,18 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
 import cml.MDElementFactory;
-import controls.ia.ccis.Reference;
 
 public class CCI_ItemElementFactory {
 
-	private MDElementFactory factory;
+	private MDElementFactory factory = null;
 	private Package ccisFolder = null;
-	private Package statusFolder = null;
-	private Package typeFolder = null;
-	private Package versionFolder = null;
 	
-	public CCI_ItemElementFactory(MDElementFactory factory, Package ccisFolder, Package statusFolder, Package typeFolder, Package versionFolder) {
+	public CCI_ItemElementFactory(MDElementFactory factory, Package ccisFolder) {
 		this.factory= factory;
 		this.ccisFolder = ccisFolder;
-		this.statusFolder = statusFolder;
-		this.typeFolder = typeFolder;
-		this.versionFolder = versionFolder;
 	}
 	
-	public void createCCI(Stereotype cci_ItemStereotype, Stereotype referenceStereotype, CCI_Item item) {
+	public void createCCI(Package enumsFolder, Stereotype cci_ItemStereotype, Stereotype referenceStereotype, CCI_Item item) {
 		Package folder = null;
 		ArrayList<Class> items = null;
 
@@ -37,7 +30,7 @@ public class CCI_ItemElementFactory {
 		Class cciClass = Finder.byNameRecursively().find(ccisFolder, Class.class, item.id);
 		StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "Id", item.id, true);
 		
-		EnumerationLiteral statusLiteral = Finder.byNameRecursively().find(statusFolder, EnumerationLiteral.class, item.status);
+		EnumerationLiteral statusLiteral = Finder.byNameRecursively().find(enumsFolder, EnumerationLiteral.class, item.status);
 		StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "Status", statusLiteral, true);
 		
 		StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "Publish Date", item.publishDate, true);
@@ -46,7 +39,7 @@ public class CCI_ItemElementFactory {
 		StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "Parameter", item.parameter, true);
 		StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "Note", item.note, true);
 
-		EnumerationLiteral typeLiteral = Finder.byNameRecursively().find(typeFolder, EnumerationLiteral.class, item.type);
+		EnumerationLiteral typeLiteral = Finder.byNameRecursively().find(enumsFolder, EnumerationLiteral.class, item.type);
 		StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "Type", typeLiteral, true);
 
 		/**
@@ -54,7 +47,7 @@ public class CCI_ItemElementFactory {
 		 */
 		if (item.references != null && item.references.size() > 0) {
 			folder = factory.createPackage("References", idFolder);
-			items = createReferences(folder, referenceStereotype, item.references);
+			items = createReferences(enumsFolder, folder, referenceStereotype, item.references);
 			StereotypesHelper.setStereotypePropertyValue(cciClass, cci_ItemStereotype, "References", items, true);
 		}
 	}
@@ -62,6 +55,7 @@ public class CCI_ItemElementFactory {
 	/**
 	 * Creates the Magic Draw references from the given references.
 	 * 
+	 * @param enumsFolder         - the folder containing the versions.
 	 * @param folder              - the folder to contain the newly created
 	 *                            references.
 	 * @param referenceStereotype - the reference stereotype to be applied to each
@@ -71,11 +65,11 @@ public class CCI_ItemElementFactory {
 	 * @return the newly created collection of Magic Draw classes created from the
 	 *         given references.
 	 */
-	private ArrayList<Class> createReferences(Package folder, Stereotype referenceStereotype,
+	private ArrayList<Class> createReferences(Package enumsFolder, Package folder, Stereotype referenceStereotype,
 			List<Reference> references) {
 		ArrayList<Class> result = new ArrayList<Class>();
 		for (Reference reference : references) {
-			Class refClass = createReference(folder, referenceStereotype, reference);
+			Class refClass = createReference(enumsFolder, folder, referenceStereotype, reference);
 			result.add(refClass);
 		}
 		return result;
@@ -84,6 +78,7 @@ public class CCI_ItemElementFactory {
 	/**
 	 * Creates the Magic Draw reference from the given reference.
 	 * 
+	 * @param enumsFolder         - the folder containing the versions.
 	 * @param folder              - the folder to contain the newly created
 	 *                            reference.
 	 * @param referenceStereotype - the reference stereotype to be applied to each
@@ -92,13 +87,13 @@ public class CCI_ItemElementFactory {
 	 *                            create the Magic Draw classes from.
 	 * @return the newly created Magic Draw class created from the given reference.
 	 */
-	private Class createReference(Package folder, Stereotype referenceStereotype, Reference reference) {
+	private Class createReference(Package enumsFolder, Package folder, Stereotype referenceStereotype, Reference reference) {
 		Class result = factory.createClass(folder, reference.index, referenceStereotype);
 		if (reference.index != null) {
 			StereotypesHelper.setStereotypePropertyValue(result, referenceStereotype, "Creator", reference.creator, true);
 			StereotypesHelper.setStereotypePropertyValue(result, referenceStereotype, "Title", reference.title, true);
 
-			EnumerationLiteral versionLiteral = Finder.byNameRecursively().find(versionFolder, EnumerationLiteral.class, reference.version);
+			EnumerationLiteral versionLiteral = Finder.byNameRecursively().find(enumsFolder, EnumerationLiteral.class, reference.version);
 			StereotypesHelper.setStereotypePropertyValue(result, referenceStereotype, "Version", versionLiteral, true);
 			
 			StereotypesHelper.setStereotypePropertyValue(result, referenceStereotype, "Location", reference.location, true);

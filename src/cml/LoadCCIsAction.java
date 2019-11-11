@@ -4,7 +4,6 @@ package cml;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.annotation.CheckForNull;
 import javax.swing.JFileChooser;
@@ -22,6 +21,7 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
+import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
@@ -41,10 +41,6 @@ import controls.ia.ccis.CCI_ItemParser;
 @SuppressWarnings("serial")
 class LoadCCIsAction extends MDAction {
 	private Package ccisFolder = null;
-	private Package baseFolder = null;
-	private Package typeFolder = null;
-	private Package versionFolder = null;
-	private Package statusFolder = null;
 	private MDElementFactory factory = null;
 	private CCI_ItemElementFactory ccisFactory = null;
 
@@ -92,24 +88,14 @@ class LoadCCIsAction extends MDAction {
 			Package model = project.getPrimaryModel();
 			if (project != null && model != null) {
 				SessionManager.getInstance().createSession(project, "Generating CCIs");
+
+				Stereotype referenceStereotype = (Stereotype)Finder.byQualifiedName().find(project, "cML::IA::Reference::Reference");
 				Stereotype cci_ItemStereotype = StereotypesHelper.getStereotype(project, "CCI_Item", (Profile) null);
-				Stereotype referenceStereotype = StereotypesHelper.getStereotype(project, "CCI:Reference", (Profile) null);
 
 				ArrayList<CCI_Item> ccis = parser.getCCIs();
 				factory = new MDElementFactory(project);
 				ccisFolder = factory.createPackage("CCIs (2016-06-27)", model);
-				baseFolder = factory.createPackage("base", ccisFolder);
-
-				typeFolder = factory.createPackage("Type", baseFolder);
-				factory.createEnumeration(typeFolder, "Type", Arrays.asList("policy", "technical"));
-
-				versionFolder = factory.createPackage("Version", baseFolder);
-				factory.createEnumeration(versionFolder, "Version", Arrays.asList("3", "4"));
-
-				statusFolder = factory.createPackage("Status", baseFolder);
-				factory.createEnumeration(statusFolder, "Status", Arrays.asList("draft", "deprecated"));
-
-				ccisFactory = new CCI_ItemElementFactory(factory, ccisFolder, statusFolder, typeFolder, versionFolder);
+				ccisFactory = new CCI_ItemElementFactory(factory, ccisFolder);
 
 				for (CCI_Item item : ccis) {
 					try {
@@ -120,10 +106,12 @@ class LoadCCIsAction extends MDAction {
 						System.err.println("Failed creating cci. Error (" + item.id + "): " + ex.getMessage());
 					}
 				}
-
+				
+				Package enumsFolder = (Package)Finder.byQualifiedName().find(project, "cML::IA::Enums");
+				
 				for (CCI_Item item : ccis) {
 					try {
-						ccisFactory.createCCI(cci_ItemStereotype, referenceStereotype, item);
+						ccisFactory.createCCI(enumsFolder, cci_ItemStereotype, referenceStereotype, item);
 						System.out.println("Populating control : " + item.id);
 					} catch (Exception ex) {
 						System.err.println("Failed creating cci. Error (" + item.id + "): " + ex.getMessage());

@@ -4,8 +4,6 @@ package cml;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 
 import javax.annotation.CheckForNull;
 import javax.swing.JFileChooser;
@@ -21,8 +19,10 @@ import org.w3c.dom.NodeList;
 import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
+import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
+import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
@@ -44,8 +44,6 @@ import controls.nist.Statement;
 @SuppressWarnings("serial")
 class LoadNISTControlsAction extends MDAction {
 	private Package controlsFolder = null;
-	private Package prioritiesFolder = null;
-	private Package baselineImpactsFolder = null;
 	private MDElementFactory factory = null;
 	private NISTElementFactory nistFactory = null;
 
@@ -112,7 +110,9 @@ class LoadNISTControlsAction extends MDAction {
 						"Supplemental Guidance", (Profile) null);
 				Stereotype controlEnhancementStereotype = StereotypesHelper.getStereotype(project,
 						"Control Enhancement", (Profile) null);
-				Stereotype referenceStereotype = StereotypesHelper.getStereotype(project, "Reference", (Profile) null);
+
+				Stereotype referenceStereotype = (Stereotype)Finder.byQualifiedName().find(project, "cML::NIST::Reference::Reference");
+
 				Stereotype withdrawnStereotype = StereotypesHelper.getStereotype(project, "Withdrawn", (Profile) null);
 				Stereotype objectiveStereotype = StereotypesHelper.getStereotype(project, "Objective", (Profile) null);
 				Stereotype potentialAssessmentStereotype = StereotypesHelper.getStereotype(project,
@@ -121,17 +121,7 @@ class LoadNISTControlsAction extends MDAction {
 				ArrayList<Control> controls = parser.getControls();
 				factory = new MDElementFactory(project);
 				controlsFolder = factory.createPackage("NIST Security Controls (53 & 53a Rev. 4)", model);
-
-				Package baseFolder = factory.createPackage("base", controlsFolder);
-
-				prioritiesFolder = factory.createPackage("priorities", baseFolder);
-				factory.createEnumeration(prioritiesFolder, "Priority", Arrays.asList("P1", "P2", "P3"));
-
-				baselineImpactsFolder = factory.createPackage("baseline-impacts", baseFolder);
-				factory.createEnumeration(baselineImpactsFolder, "BaselineImpact",
-						Arrays.asList("LOW", "MODERATE", "HIGH"));
-
-				nistFactory = new NISTElementFactory(factory, prioritiesFolder, controlsFolder, baselineImpactsFolder);
+				nistFactory = new NISTElementFactory(factory, controlsFolder);
 
 				for (Control control : controls) {
 					try {
@@ -144,9 +134,12 @@ class LoadNISTControlsAction extends MDAction {
 					}
 				}
 
+
+				Package enumsFolder = (Package)Finder.byQualifiedName().find(project, "cML::NIST::Enums");
+				
 				for (Control control : controls) {
 					try {
-						nistFactory.createControl(controlStereotype, baselineImpactStereotype, statementStereotype,
+						nistFactory.createControl(enumsFolder, controlStereotype, baselineImpactStereotype, statementStereotype,
 								supplementalGuidanceStereotype, controlEnhancementStereotype, referenceStereotype,
 								withdrawnStereotype, objectiveStereotype, potentialAssessmentStereotype, control);
 						System.out.println("Populating control : " + control.number);
