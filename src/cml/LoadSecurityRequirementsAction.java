@@ -31,7 +31,9 @@ import controls.nist.SecurityRequirement;
 import controls.nist.SecurityRequirementParser;
 
 /**
- *  The Load NIST Security Requirements Action to load the requirements from from NIST SP 800-171 Rev. 1.
+ * The Load NIST Security Requirements Action to load the requirements from from
+ * NIST SP 800-171 Rev. 1.
+ * 
  * @author Sean C. Hubbell
  *
  */
@@ -42,7 +44,8 @@ class LoadSecurityRequirementsAction extends MDAction {
 
 	/**
 	 * Loads the NIST Security Requirements from 171 Rev. 1. actions
-	 * @param id - the menu id.
+	 * 
+	 * @param id   - the menu id.
 	 * @param name - the menu name.
 	 */
 	public LoadSecurityRequirementsAction(@CheckForNull String id, String name) {
@@ -50,7 +53,9 @@ class LoadSecurityRequirementsAction extends MDAction {
 	}
 
 	/**
-	 * The callback for the invocation of the loading of the NIST Security Requirements from 171 Rev. 1.
+	 * The callback for the invocation of the loading of the NIST Security
+	 * Requirements from 171 Rev. 1.
+	 * 
 	 * @param e - the action event.
 	 */
 	@Override
@@ -60,13 +65,13 @@ class LoadSecurityRequirementsAction extends MDAction {
 		try {
 			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 			chooser.setDialogTitle("Select 171 Appendix F - filtered.xml");
-			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
 			} else {
 				return;
 			}
-			
+
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 
@@ -74,7 +79,7 @@ class LoadSecurityRequirementsAction extends MDAction {
 			if (nList.getLength() > 0) {
 				parser.parse(nList);
 			}
-			
+
 			String indent = "  ";
 			for (SecurityRequirement requirement : parser.getSecurityRequirements()) {
 				requirement.print(indent);
@@ -84,7 +89,8 @@ class LoadSecurityRequirementsAction extends MDAction {
 			Package model = project.getPrimaryModel();
 			if (project != null && model != null) {
 				SessionManager.getInstance().createSession(project, "Generating Security Requirements");
-				Stereotype securityRequirementStereotype = StereotypesHelper.getStereotype(project, "Security Requirement", (Profile) null);
+				Stereotype securityRequirementStereotype = StereotypesHelper.getStereotype(project,
+						"Security Requirement", (Profile) null);
 
 				ArrayList<SecurityRequirement> requirements = parser.getSecurityRequirements();
 				factory = new MDElementFactory(project);
@@ -92,14 +98,16 @@ class LoadSecurityRequirementsAction extends MDAction {
 
 				for (SecurityRequirement requirement : requirements) {
 					try {
-						Class securityRequirementClass = factory.createClass(securityRequirementsFolder, requirement.Identifier, securityRequirementStereotype);
-						StereotypesHelper.setStereotypePropertyValue(securityRequirementClass, securityRequirementStereotype, "Id",
-								requirement.Identifier, true);
-						StereotypesHelper.setStereotypePropertyValue(securityRequirementClass, securityRequirementStereotype, "Text",
-								requirement.Text, true);
-						
+						Class securityRequirementClass = factory.createClass(securityRequirementsFolder,
+								requirement.Identifier, securityRequirementStereotype);
+						StereotypesHelper.setStereotypePropertyValue(securityRequirementClass,
+								securityRequirementStereotype, "Id", requirement.Identifier, true);
+						StereotypesHelper.setStereotypePropertyValue(securityRequirementClass,
+								securityRequirementStereotype, "Text", requirement.Text, true);
+
 					} catch (Exception ex) {
-						System.err.println("Failed creating controls. Error (" + requirement.Identifier + "): " + ex.getMessage());
+						System.err.println(
+								"Failed creating controls. Error (" + requirement.Identifier + "): " + ex.getMessage());
 					}
 				}
 

@@ -66,13 +66,13 @@ class LoadCCIsAction extends MDAction {
 		try {
 			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 			chooser.setDialogTitle("Select U_CCI_List.xml file");
-			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
 			} else {
 				return;
 			}
-			
+
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 
@@ -89,7 +89,8 @@ class LoadCCIsAction extends MDAction {
 			if (project != null && model != null) {
 				SessionManager.getInstance().createSession(project, "Generating CCIs");
 
-				Stereotype referenceStereotype = (Stereotype)Finder.byQualifiedName().find(project, "cML::IA::Reference::Reference");
+				Stereotype referenceStereotype = (Stereotype) Finder.byQualifiedName().find(project,
+						"cML::IA::Reference::Reference");
 				Stereotype cci_ItemStereotype = StereotypesHelper.getStereotype(project, "CCI_Item", (Profile) null);
 
 				ArrayList<CCI_Item> ccis = parser.getCCIs();
@@ -106,9 +107,9 @@ class LoadCCIsAction extends MDAction {
 						System.err.println("Failed creating cci. Error (" + item.id + "): " + ex.getMessage());
 					}
 				}
-				
-				Package enumsFolder = (Package)Finder.byQualifiedName().find(project, "cML::IA::Enums");
-				
+
+				Package enumsFolder = (Package) Finder.byQualifiedName().find(project, "cML::IA::Enums");
+
 				for (CCI_Item item : ccis) {
 					try {
 						ccisFactory.createCCI(enumsFolder, cci_ItemStereotype, referenceStereotype, item);

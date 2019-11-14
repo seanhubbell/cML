@@ -4,6 +4,12 @@ package controls.ia.ccis;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The IA CCI Item data class.
+ * 
+ * @author Sean C. Hubbell
+ *
+ */
 public class CCI_Item {
 	public String id = null;
 	public String status = null;

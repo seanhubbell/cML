@@ -4,7 +4,6 @@ package controls.nist;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.NullArgumentException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -95,7 +94,7 @@ public class ControlAssessmentParser {
 			}
 		}
 	}
-	
+
 	/**
 	 * Parse the objective from the given node.
 	 * 
@@ -153,7 +152,7 @@ public class ControlAssessmentParser {
 
 		Element elem = (Element) node;
 		result.method = elem.getAttribute("method");
-		
+
 		for (Integer i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
@@ -208,7 +207,7 @@ public class ControlAssessmentParser {
 						if (match == null) {
 							// if you are in this code, this is due to the two standards (800-53 & 80053a)
 							// have different text for the number.
-							throw new NullArgumentException("Unable to find control enhancement: " + number);
+							throw new IllegalArgumentException("Unable to find control enhancement: " + number);
 						}
 						continue;
 					}

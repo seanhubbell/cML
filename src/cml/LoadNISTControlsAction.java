@@ -37,7 +37,9 @@ import controls.nist.NISTElementFactory;
 import controls.nist.Statement;
 
 /**
- *  The Load NIST Controls Action is the action that will parse the NIST SP 800-54 and NIST SP 800-53a Revision 4 files.
+ * The Load NIST Controls Action is the action that will parse the NIST SP
+ * 800-54 and NIST SP 800-53a Revision 4 files.
+ * 
  * @author Sean C. Hubbell
  *
  */
@@ -49,7 +51,8 @@ class LoadNISTControlsAction extends MDAction {
 
 	/**
 	 * Loads the NIST Control actions
-	 * @param id - the menu id.
+	 * 
+	 * @param id   - the menu id.
 	 * @param name - the menu name.
 	 */
 	public LoadNISTControlsAction(@CheckForNull String id, String name) {
@@ -58,6 +61,7 @@ class LoadNISTControlsAction extends MDAction {
 
 	/**
 	 * The callback for the invocation of the loading of the NIST Controls.
+	 * 
 	 * @param e - the action event.
 	 */
 	@Override
@@ -67,13 +71,13 @@ class LoadNISTControlsAction extends MDAction {
 		try {
 			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 			chooser.setDialogTitle("Select 800-53-controls-mod-pm-priorities-added.xml");
-			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
 			} else {
 				return;
 			}
-			
+
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 
@@ -111,7 +115,8 @@ class LoadNISTControlsAction extends MDAction {
 				Stereotype controlEnhancementStereotype = StereotypesHelper.getStereotype(project,
 						"Control Enhancement", (Profile) null);
 
-				Stereotype referenceStereotype = (Stereotype)Finder.byQualifiedName().find(project, "cML::NIST::Reference::Reference");
+				Stereotype referenceStereotype = (Stereotype) Finder.byQualifiedName().find(project,
+						"cML::NIST::Reference::Reference");
 
 				Stereotype withdrawnStereotype = StereotypesHelper.getStereotype(project, "Withdrawn", (Profile) null);
 				Stereotype objectiveStereotype = StereotypesHelper.getStereotype(project, "Objective", (Profile) null);
@@ -125,23 +130,24 @@ class LoadNISTControlsAction extends MDAction {
 
 				for (Control control : controls) {
 					try {
-					factory.createPackage(control.family, controlsFolder);
-					Package familyFolder = factory.createPackage(control.family, controlsFolder);
-					Package controlNumFolder = factory.createPackage(control.number, familyFolder);
-					factory.createClass(controlNumFolder, control.number, controlStereotype);
+						factory.createPackage(control.family, controlsFolder);
+						Package familyFolder = factory.createPackage(control.family, controlsFolder);
+						Package controlNumFolder = factory.createPackage(control.number, familyFolder);
+						factory.createClass(controlNumFolder, control.number, controlStereotype);
 					} catch (Exception ex) {
-						System.err.println("Failed creating controls. Error (" + control.number + "): " + ex.getMessage());
+						System.err.println(
+								"Failed creating controls. Error (" + control.number + "): " + ex.getMessage());
 					}
 				}
 
+				Package enumsFolder = (Package) Finder.byQualifiedName().find(project, "cML::NIST::Enums");
 
-				Package enumsFolder = (Package)Finder.byQualifiedName().find(project, "cML::NIST::Enums");
-				
 				for (Control control : controls) {
 					try {
-						nistFactory.createControl(enumsFolder, controlStereotype, baselineImpactStereotype, statementStereotype,
-								supplementalGuidanceStereotype, controlEnhancementStereotype, referenceStereotype,
-								withdrawnStereotype, objectiveStereotype, potentialAssessmentStereotype, control);
+						nistFactory.createControl(enumsFolder, controlStereotype, baselineImpactStereotype,
+								statementStereotype, supplementalGuidanceStereotype, controlEnhancementStereotype,
+								referenceStereotype, withdrawnStereotype, objectiveStereotype,
+								potentialAssessmentStereotype, control);
 						System.out.println("Populating control : " + control.number);
 					} catch (Exception ex) {
 						System.err.println(
@@ -159,14 +165,13 @@ class LoadNISTControlsAction extends MDAction {
 					ModelHelper.setComment(term, control.title);
 					ModelElementsManager.getInstance().addElement(glossary, term);
 
-
 					if (control.statements != null && control.statements.size() > 0) {
 						for (Statement statement : control.statements) {
 							if (statement.number != null && statement.description != null
 									&& !statement.number.equals("") && !statement.description.equals("")) {
 								term = factory.createClass(glossaryPackage, statement.number, termStereotype);
 								ModelHelper.setComment(term, statement.description);
-								
+
 							}
 						}
 					}
@@ -182,14 +187,16 @@ class LoadNISTControlsAction extends MDAction {
 
 	/**
 	 * Extract the security control assessment.
-	 * @param parser - the parser to used to extract the security control assessments from NIST SP 800-53a rev. 4.
+	 * 
+	 * @param parser - the parser to used to extract the security control
+	 *               assessments from NIST SP 800-53a rev. 4.
 	 */
 	private static void extracteSecurityControlAssessments(ControlAssessmentParser parser) {
 		File file = null;
 		try {
 			JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 			chooser.setDialogTitle("Select 800-53a-objectives.xmll");
-			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));			
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = chooser.getSelectedFile();
 			} else {

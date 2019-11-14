@@ -1,3 +1,4 @@
+/* Copyright Sean C. Hubbell All Rights Reserved */
 package controls.nist;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class NISTElementFactory {
 	 * Creates an instance of the NIST Element Factory to be able to generate NIST
 	 * elements.
 	 * 
-	 * @param factory      the Magic Draw factory used to create Magic Draw
+	 * @param factory        the Magic Draw factory used to create Magic Draw
 	 *                       specific elements.
 	 * @param controlsFolder the Magic Draw package used to start the search for
 	 *                       controls from.
@@ -40,31 +41,33 @@ public class NISTElementFactory {
 
 	/**
 	 * Creates the NIST control from the given control
-	 * @param enumsFolder                    - the folder containing the reusable enumerations
-	 * @param controlStereotype              - the control stereotype to be applied
-	 *                                       to each control created.
-	 * @param baselineImpactStereotype       - the baseline impact stereotype to be
+	 * 
+	 * @param enumsFolder                    the folder containing the reusable
+	 *                                       enumerations
+	 * @param controlStereotype              the control stereotype to be applied to
+	 *                                       each control created
+	 * @param baselineImpactStereotype       the baseline impact stereotype to be
 	 *                                       applied to each baseline impact
 	 *                                       created.
-	 * @param statementStereotype            - the statement stereotype to be
-	 *                                       applied to each statement created.
-	 * @param supplementalGuidanceStereotype - the supplemental guidance stereotype
-	 *                                       to be applied to each supplemental
+	 * @param statementStereotype            the statement stereotype to be applied
+	 *                                       to each statement created.
+	 * @param supplementalGuidanceStereotype the supplemental guidance stereotype to
+	 *                                       be applied to each supplemental
 	 *                                       guidance created.
-	 * @param controlEnhancementStereotype   - the control enhancement stereotype to
+	 * @param controlEnhancementStereotype   the control enhancement stereotype to
 	 *                                       be applied to each control enhancement
 	 *                                       created.
-	 * @param referenceStereotype            - the reference stereotype to be
-	 *                                       applied to each reference created.
-	 * @param withdrawnStereotype            - the withdrawn stereotype to be
-	 *                                       applied to each withdrawn created.
-	 * @param objectiveStereotype            - the objective stereotype to be
-	 *                                       applied to each objective created.
-	 * @param potentialAssessmentStereotype  - the potential assessment stereotype
-	 *                                       to be applied to each potential
-	 *                                       assessment created.
-	 * @param control                        - the control that contains the data
-	 *                                       from the standard.
+	 * @param referenceStereotype            the reference stereotype to be applied
+	 *                                       to each reference created.
+	 * @param withdrawnStereotype            the withdrawn stereotype to be applied
+	 *                                       to each withdrawn created.
+	 * @param objectiveStereotype            the objective stereotype to be applied
+	 *                                       to each objective created.
+	 * @param potentialAssessmentStereotype  the potential assessment stereotype to
+	 *                                       be applied to each potential assessment
+	 *                                       created
+	 * @param control                        the control that contains the datafrom
+	 *                                       the standard.
 	 */
 	public void createControl(Package enumsFolder, Stereotype controlStereotype, Stereotype baselineImpactStereotype,
 			Stereotype statementStereotype, Stereotype supplementalGuidanceStereotype,
@@ -117,10 +120,9 @@ public class NISTElementFactory {
 		 */
 		if (control.controlEnhancements != null && control.controlEnhancements.size() > 0) {
 			folder = factory.createPackage("Control Enhancements", controlNumFolder);
-			items = createControlEnhancements(enumsFolder, folder, controlEnhancementStereotype, baselineImpactStereotype,
-					statementStereotype, supplementalGuidanceStereotype, withdrawnStereotype, objectiveStereotype,
-					potentialAssessmentStereotype,
-					control.controlEnhancements);
+			items = createControlEnhancements(enumsFolder, folder, controlEnhancementStereotype,
+					baselineImpactStereotype, statementStereotype, supplementalGuidanceStereotype, withdrawnStereotype,
+					objectiveStereotype, potentialAssessmentStereotype, control.controlEnhancements);
 			StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Control Enhancements", items,
 					true);
 		}
@@ -159,23 +161,24 @@ public class NISTElementFactory {
 		if (control.potentialAssessments != null && control.potentialAssessments.size() > 0) {
 			folder = factory.createPackage("Potential Assessments", controlNumFolder);
 			items = createPotentialAssessments(folder, potentialAssessmentStereotype, control.potentialAssessments);
-			StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Potential Assessments", items,
-					true);
+			StereotypesHelper.setStereotypePropertyValue(controlClass, controlStereotype, "Potential Assessments",
+					items, true);
 		}
 	}
 
 	/**
 	 * Creates a collection of Magic Draw classes for each baseline impact provided.
 	 * 
-	 * @param enumsFolder              - the folder containings the reusable enumerations.
+	 * @param enumsFolder              - the folder containings the reusable
+	 *                                 enumerations.
 	 * @param baselineImpactStereotype - the stereotype for the baseline impact
 	 *                                 classes created
 	 * @param baselineImpacts          - the baseline impacts collection that need
 	 *                                 Magic Draw classes generated against.
 	 * @return the collection of new classes created from the given baseline impacts
 	 */
-	private ArrayList<EnumerationLiteral> createBaselineImpacts(Package enumsFolder, Stereotype baselineImpactStereotype,
-			List<String> baselineImpacts) {
+	private ArrayList<EnumerationLiteral> createBaselineImpacts(Package enumsFolder,
+			Stereotype baselineImpactStereotype, List<String> baselineImpacts) {
 		ArrayList<EnumerationLiteral> items = new ArrayList<EnumerationLiteral>();
 		for (String bli : baselineImpacts) {
 			EnumerationLiteral baselineImpactLiteral = Finder.byNameRecursively().find(enumsFolder,
@@ -250,7 +253,7 @@ public class NISTElementFactory {
 			sgClass.setName(sg.description);
 			sgClass.setOwner(folder);
 			result.add(sgClass);
-			
+
 			if (sg.description != null) {
 				StereotypesHelper.setStereotypePropertyValue(sgClass, supplementalGuidanceStereotype, "Description",
 						sg.description, true);
@@ -273,7 +276,8 @@ public class NISTElementFactory {
 	 * Creates the Magic Draw control enhancements from the given control
 	 * enhancements.
 	 * 
-	 * @param enumsfolder                    - the folder containing the reusable enumerations.
+	 * @param enumsfolder                    - the folder containing the reusable
+	 *                                       enumerations.
 	 * @param folder                         - the folder to contain the newly
 	 *                                       created control enhancements.
 	 * @param controlEnhancementStereotype   - the control enhancement stereotype to
@@ -297,9 +301,9 @@ public class NISTElementFactory {
 	 * @return the newly created collection of Magic Draw classes created from the
 	 *         given control enhancements.
 	 */
-	private ArrayList<Class> createControlEnhancements(Package enumsFolder, Package folder, Stereotype controlEnhancementStereotype,
-			Stereotype baselineImpactStereotype, Stereotype statementStereotype,
-			Stereotype supplementalGuidanceStereotype, Stereotype withdrawnStereotype,
+	private ArrayList<Class> createControlEnhancements(Package enumsFolder, Package folder,
+			Stereotype controlEnhancementStereotype, Stereotype baselineImpactStereotype,
+			Stereotype statementStereotype, Stereotype supplementalGuidanceStereotype, Stereotype withdrawnStereotype,
 			Stereotype objectiveStereotype, Stereotype potentialAssessmentStereotype,
 			List<ControlEnhancement> controlEnhancements) {
 		ArrayList<Class> result = new ArrayList<Class>();
@@ -345,19 +349,20 @@ public class NISTElementFactory {
 				StereotypesHelper.setStereotypePropertyValue(ceClass, controlEnhancementStereotype, "Withdrawn",
 						withdrawnClass, true);
 			}
-			
+
 			if (ce.objectives != null && ce.objectives.size() > 0) {
 				subFolder = factory.createPackage("Objectives", folder);
 				ArrayList<Class> subClasses = createObjectives(subFolder, objectiveStereotype, ce.objectives);
-				StereotypesHelper.setStereotypePropertyValue(ceClass, objectiveStereotype, "Objectives",
-						subClasses, true);
+				StereotypesHelper.setStereotypePropertyValue(ceClass, objectiveStereotype, "Objectives", subClasses,
+						true);
 			}
-			
+
 			if (ce.potentialAssessments != null && ce.potentialAssessments.size() > 0) {
 				subFolder = factory.createPackage("Potential Assessments", folder);
-				ArrayList<Class> subClasses = createPotentialAssessments(subFolder, potentialAssessmentStereotype, ce.potentialAssessments);
-				StereotypesHelper.setStereotypePropertyValue(ceClass, potentialAssessmentStereotype, "Potential Assessments",
-						subClasses, true);
+				ArrayList<Class> subClasses = createPotentialAssessments(subFolder, potentialAssessmentStereotype,
+						ce.potentialAssessments);
+				StereotypesHelper.setStereotypePropertyValue(ceClass, potentialAssessmentStereotype,
+						"Potential Assessments", subClasses, true);
 			}
 
 			result.add(ceClass);
@@ -436,14 +441,14 @@ public class NISTElementFactory {
 						objective.decision, true);
 			}
 			result.add(objectiveClass);
-			
+
 			if (objective.objectives != null && objective.objectives.size() > 0) {
 				Package subFolder = factory.createPackage("Objectives", folder);
 				ArrayList<Class> subClasses = createObjectives(subFolder, objectiveStereotype, objective.objectives);
 				StereotypesHelper.setStereotypePropertyValue(objectiveClass, objectiveStereotype, "Objectives",
 						subClasses, true);
 			}
-			
+
 		}
 		return result;
 	}

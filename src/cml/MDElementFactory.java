@@ -123,6 +123,7 @@ public class MDElementFactory {
 
 	/**
 	 * Creates a Glossary Table Diagram.
+	 * 
 	 * @param parent the parent package to contain the diagram
 	 * @return the newly created glossary table diagram created or null;
 	 */
